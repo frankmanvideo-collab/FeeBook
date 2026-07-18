@@ -1,0 +1,25 @@
+# FeeBook
+
+> FeeBook is a free fee tracking web app built for Indian private tuition teachers.
+
+## What it solves
+- Partial cash payment tracking (existing apps only have Paid/Unpaid)
+- Eliminates embarrassing automated reminders sent to parents after cash already received
+- Simple dashboard showing paid, partial, and pending students
+- WhatsApp-native reminder workflow — teacher always in control
+- Works on any phone browser, no download needed
+
+## Who uses it
+- Solo tuition teachers in India teaching 10-80 students from home
+- Small coaching centers in Tier 2 and Tier 3 Indian cities
+- Teachers who collect fees primarily in cash
+
+## Pricing
+- Free: Up to 15 students, core features
+- Pro: Rs 99 per month, unlimited students, attendance, expenses, reports
+
+## Built by
+An 11th grade student in India who watched his own tuition teacher struggle with manual fee tracking.
+
+## Website
+https://feebook.vercel.app
