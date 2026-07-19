@@ -318,18 +318,20 @@
   <div class="bg-white rounded-xl p-4 shadow-sm border border-slate-100 mb-4">
     <p class="font-semibold mb-1">Your Payment Code</p>
     <p class="text-xs text-slate-500 mb-2">
-      Write this in the message field when paying on Buy Me a Coffee.
-      Pro activates automatically.</p>
+      Plot twist: this app's developer can't even set up a UPI ID 💀 (minor problem, literally 😅).
+      Email your code below to
+      <a href="mailto:frankmanvideo@gmail.com" class="text-blue-600 font-semibold underline">frankmanvideo@gmail.com</a>
+      and I'll manually activate Pro for you — trustworthy, mummy-approved 😂🙏</p>
     <p id="myCode" class="text-xl font-mono font-bold text-blue-600 mb-3">Loading…</p>
     <div class="flex gap-2 mb-3">
       <button onclick="copyCode()"
         class="flex-1 bg-blue-600 text-white rounded-xl py-3 font-medium text-sm">
         Copy Code</button>
-      <a id="bmcLink" href="#" target="_blank"
+      <a id="bmcLink" href="mailto:frankmanvideo@gmail.com?subject=FeeBook Pro Request" target="_blank"
         class="flex-1 text-center bg-yellow-500 text-white rounded-xl py-3 font-medium text-sm"
-        style="line-height:20px; padding-top:10px">Pay ₹99 →</a>
+        style="line-height:20px; padding-top:10px">Email for Pro →</a>
     </div>
-    <p class="text-xs text-slate-400 mb-1">Forgot to write the code? Enter it here:</p>
+    <p class="text-xs text-slate-400 mb-1">Got an activation code from admin via email? Enter it here:</p>
     <div class="flex gap-2">
       <input id="manualCode" placeholder="FB-XXXX-XXXXX"
         class="flex-1 border-2 border-slate-200 rounded-xl p-3 font-mono text-sm">
@@ -1282,7 +1284,6 @@ async function exportReport() {
 ═══════════════════════════════════════ */
 async function renderSettings() {
   if (!user) return;
-  document.getElementById('bmcLink').href = BMC_PAGE;
 
   const { data: subs } = await sb.from('subscriptions')
     .select('*').eq('teacher_id', user.id)
@@ -1293,9 +1294,9 @@ async function renderSettings() {
   document.getElementById('proCard').innerHTML = active
     ? `<p class="font-bold text-green-600 text-base">✅ FeeBook Pro Active</p>
        <p class="text-sm text-slate-500 mt-1">Expires ${subs[0].expiry_date} · ${days} days remaining</p>
-       <a href="${BMC_PAGE}" target="_blank"
+       <a href="mailto:frankmanvideo@gmail.com?subject=FeeBook Pro Renewal" target="_blank"
          class="block text-center bg-yellow-500 text-white rounded-xl py-3 font-medium mt-3">
-         Renew ₹99 →</a>`
+         Email to Renew →</a>`
     : `<p class="font-bold text-base">Free Plan</p>
        <p class="text-sm text-slate-500 mt-1">Pro includes: unlimited students, attendance, expenses, report export, previous months history.</p>
        <p class="text-sm font-semibold text-blue-600 mt-2">₹99/month</p>`;
@@ -1333,7 +1334,7 @@ async function renderSettings() {
 function copyCode() {
   const code = document.getElementById('myCode').textContent;
   navigator.clipboard.writeText(code).then(() => {
-    toast('Code copied ✓ — paste it in the message field on Buy Me a Coffee');
+    toast('Code copied ✓ — paste it in your email to request Pro');
   });
 }
 
