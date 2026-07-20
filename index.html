@@ -539,7 +539,7 @@ async function initApp() {
     const res = await fetch('/api/config');
     const config = await res.json();
     sb = window.supabase.createClient(config.url, config.key);
-    BMC_PAGE = config.bmc;
+    BMC_PAGE = config.bmc || '#';
 
     // Session listener
     sb.auth.onAuthStateChange((event, session) => {
@@ -1095,7 +1095,6 @@ async function renderDetAttendance() {
   document.getElementById('detAttendance').innerHTML = html;
 }
 
-let notesTimer;
 function saveNotes() {
   clearTimeout(notesTimer);
   notesTimer = setTimeout(async () => {
