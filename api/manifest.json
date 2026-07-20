@@ -1,21 +1,40 @@
 {
-  "name": "FeeBook — Fee Tracker for Tuition Teachers",
+  "name": "FeeBook - Fee Tracker for Tuition Teachers",
   "short_name": "FeeBook",
-  "description": "Simple fee tracker for Indian tuition teachers",
+  "description": "India's simplest fee tracker for tuition teachers. Track partial cash fees, homework, attendance. Free for 25 students.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait",
   "background_color": "#2563EB",
   "theme_color": "#2563EB",
+  "categories": ["business", "education", "productivity", "finance"],
+  "lang": "en-IN",
+  "dir": "ltr",
   "icons": [
     {
       "src": "/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
     },
     {
       "src": "/icon-512.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }
