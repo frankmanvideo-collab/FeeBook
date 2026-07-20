@@ -15,11 +15,20 @@
 <meta property="og:description" content="Track who paid, who partially paid, who hasn't paid. Homework, attendance, expenses. No auto-reminders. Free to start.">
 <meta property="og:url" content="https://feebook.vercel.app">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://feebook.vercel.app/icon-512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="FeeBook Logo">
 <meta property="og:site_name" content="FeeBook">
 <meta property="og:locale" content="en_IN">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="FeeBook — Free Fee Tracker for Tuition Teachers">
 <meta name="twitter:description" content="Track partial cash fees, homework, attendance. Built by an 11th grader for Indian teachers.">
+<meta name="twitter:image" content="https://feebook.vercel.app/icon-512.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="shortcut icon" href="/icon-192.png">
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#2563EB" id="themeColor">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -34,25 +43,12 @@
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web, Android, iOS",
   "offers": [
-    {
-      "@type": "Offer",
-      "price": "0",
-      "priceCurrency": "INR",
-      "description": "Free plan up to 25 students"
-    },
-    {
-      "@type": "Offer",
-      "price": "99",
-      "priceCurrency": "INR",
-      "description": "Pro plan unlimited students"
-    }
+    { "@type": "Offer", "price": "0", "priceCurrency": "INR", "description": "Free plan up to 25 students" },
+    { "@type": "Offer", "price": "99", "priceCurrency": "INR", "description": "Pro plan unlimited students" }
   ],
   "url": "https://feebook.vercel.app",
-  "creator": {
-    "@type": "Person",
-    "name": "FeeBook Developer",
-    "description": "Built by an 11th grade student in India"
-  },
+  "image": "https://feebook.vercel.app/icon-512.png",
+  "creator": { "@type": "Person", "name": "FeeBook Developer", "description": "Built by an 11th grade student in India" },
   "featureList": "Partial fee tracking, Homework management, Attendance tracking, WhatsApp reminders, Fee receipts, Expense tracking",
   "keywords": "tuition fee tracker, coaching fee management, partial payment tracking India, homework tracker, attendance app"
 }
@@ -80,7 +76,6 @@
   .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
   @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
   .dark .skeleton { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size: 200% 100%; }
-  @media (prefers-color-scheme: dark) { .auto-dark { color-scheme: dark; } }
   .pwa-prompt { animation: slideUp 0.3s ease-out; }
   @keyframes slideUp { from { transform: translateY(100%); opacity:0; } to { transform: translateY(0); opacity:1; } }
 </style>
@@ -96,7 +91,7 @@
 <!-- PWA INSTALL PROMPT -->
 <div id="pwaPrompt" class="hidden fixed bottom-20 left-4 right-4 max-w-md mx-auto bg-white dark:bg-dark-card rounded-2xl shadow-2xl p-5 z-50 pwa-prompt border border-slate-200 dark:border-dark-border">
   <div class="flex items-start gap-3">
-    <div class="text-4xl">📚</div>
+    <img src="/icon-192.png" alt="FeeBook" class="w-12 h-12 rounded-xl">
     <div class="flex-1">
       <p class="font-bold text-slate-800 dark:text-dark-text">Install FeeBook</p>
       <p class="text-sm text-slate-500 dark:text-dark-muted mt-1">Add to home screen for quick access — works offline too!</p>
@@ -111,7 +106,7 @@
 
 <!-- LOADING SCREEN -->
 <div id="loadingScreen" class="fixed inset-0 bg-primary-600 flex flex-col items-center justify-center z-50">
-  <div class="text-6xl mb-4">📚</div>
+  <img src="/icon-192.png" alt="FeeBook" class="w-24 h-24 mb-4 rounded-2xl shadow-2xl">
   <h1 class="text-3xl font-bold text-white">FeeBook</h1>
   <p class="text-blue-200 mt-2">Loading...</p>
   <div class="mt-6 w-48 h-1 bg-blue-400/30 rounded-full overflow-hidden">
@@ -123,12 +118,11 @@
 <!-- ══════════ AUTH ══════════ -->
 <div id="authScreen" class="hidden max-w-md mx-auto p-6 pt-10 screen-transition">
   <div class="text-center mb-8">
-    <div class="text-5xl mb-2">📚</div>
+    <img src="/icon-192.png" alt="FeeBook" class="w-20 h-20 mx-auto mb-3 rounded-2xl shadow-lg">
     <h1 class="text-3xl font-bold text-primary-600 dark:text-primary-400">FeeBook</h1>
     <p class="text-slate-500 dark:text-dark-muted mt-1">India's simplest fee tracker for tuition teachers</p>
   </div>
 
-  <!-- Google Login Button -->
   <button onclick="doGoogleLogin()"
     class="w-full bg-white dark:bg-dark-card border-2 border-slate-200 dark:border-dark-border rounded-xl py-4 font-semibold text-base flex items-center justify-center gap-3 mb-4 btn-press hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-dark-text"
     style="min-height:52px">
@@ -143,13 +137,9 @@
   </div>
 
   <div id="loginForm">
-    <input id="loginEmail" type="email" placeholder="Email"
-      class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 focus:ring-2 focus:ring-primary-100 outline-none transition-all">
-    <input id="loginPassword" type="password" placeholder="Password"
-      class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 focus:ring-2 focus:ring-primary-100 outline-none transition-all">
-    <button onclick="doLogin()"
-      class="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors"
-      style="min-height:52px">Login</button>
+    <input id="loginEmail" type="email" placeholder="Email" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+    <input id="loginPassword" type="password" placeholder="Password" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+    <button onclick="doLogin()" class="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors" style="min-height:52px">Login</button>
     <div class="flex justify-between mt-3">
       <button onclick="showForgotPassword()" class="text-sm text-primary-600 dark:text-primary-400 font-medium">Forgot Password?</button>
       <span onclick="toggleAuth()" class="text-sm text-primary-600 dark:text-primary-400 font-semibold cursor-pointer">Register free →</span>
@@ -157,37 +147,20 @@
   </div>
 
   <div id="registerForm" class="hidden">
-    <input id="regName" placeholder="Your Name" maxlength="50"
-      class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
-    <input id="regPhone" type="tel" placeholder="Phone Number (10 digits)" maxlength="10"
-      class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
-    <input id="regEmail" type="email" placeholder="Email"
-      class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
-    <input id="regPassword" type="password" placeholder="Password (6+ characters)"
-      class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
-    <input id="regReferral" placeholder="Referral Code (optional)"
-      class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
-    <button onclick="doRegister()"
-      class="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors"
-      style="min-height:52px">Create Account</button>
-    <p class="text-center mt-4 text-sm text-slate-500 dark:text-dark-muted">
-      Already registered?
-      <span onclick="toggleAuth()" class="text-primary-600 dark:text-primary-400 font-semibold cursor-pointer">Login</span>
-    </p>
+    <input id="regName" placeholder="Your Name" maxlength="50" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+    <input id="regPhone" type="tel" placeholder="Phone Number (10 digits)" maxlength="10" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+    <input id="regEmail" type="email" placeholder="Email" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+    <input id="regPassword" type="password" placeholder="Password (6+ characters)" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+    <input id="regReferral" placeholder="Referral Code (optional)" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+    <button onclick="doRegister()" class="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors" style="min-height:52px">Create Account</button>
+    <p class="text-center mt-4 text-sm text-slate-500 dark:text-dark-muted">Already registered? <span onclick="toggleAuth()" class="text-primary-600 dark:text-primary-400 font-semibold cursor-pointer">Login</span></p>
   </div>
 
-  <!-- Forgot Password Form -->
   <div id="forgotForm" class="hidden">
     <p class="text-sm text-slate-600 dark:text-dark-muted mb-3">Enter your email address. We'll send a password reset link.</p>
-    <input id="forgotEmail" type="email" placeholder="Your registered email"
-      class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
-    <button onclick="doForgotPassword()"
-      class="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors"
-      style="min-height:52px">Send Reset Link</button>
-    <p class="text-center mt-4 text-sm text-slate-500 dark:text-dark-muted">
-      Remember your password?
-      <span onclick="showLoginForm()" class="text-primary-600 dark:text-primary-400 font-semibold cursor-pointer">Login</span>
-    </p>
+    <input id="forgotEmail" type="email" placeholder="Your registered email" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+    <button onclick="doForgotPassword()" class="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors" style="min-height:52px">Send Reset Link</button>
+    <p class="text-center mt-4 text-sm text-slate-500 dark:text-dark-muted">Remember your password? <span onclick="showLoginForm()" class="text-primary-600 dark:text-primary-400 font-semibold cursor-pointer">Login</span></p>
   </div>
 
   <p id="authError" class="text-red-600 text-sm mt-3 text-center min-h-[20px]"></p>
@@ -197,7 +170,10 @@
 <div id="appScreen" class="hidden max-w-md mx-auto pb-24 screen-transition">
   <div class="bg-primary-600 dark:bg-primary-900 text-white p-5 rounded-b-2xl">
     <div class="flex justify-between items-center">
-      <h1 class="text-xl font-bold">FeeBook 📚</h1>
+      <div class="flex items-center gap-2">
+        <img src="/icon-192.png" alt="FeeBook" class="w-8 h-8 rounded-lg">
+        <h1 class="text-xl font-bold">FeeBook</h1>
+      </div>
       <div class="flex items-center gap-2">
         <button onclick="toggleDarkMode()" class="text-lg bg-white/10 rounded-full w-8 h-8 flex items-center justify-center" id="darkToggle">🌙</button>
         <span id="proBadge" class="text-xs bg-white/20 px-3 py-1 rounded-full font-medium">FREE</span>
@@ -205,53 +181,30 @@
     </div>
     <p id="teacherName" class="text-blue-100 text-sm mt-1"></p>
   </div>
-
   <div id="expiryBanner" class="hidden mx-4 mt-3 rounded-xl p-3 text-sm font-medium"></div>
-
   <div class="flex items-center justify-between px-4 mt-4">
     <button onclick="changeMonth(-1)" class="text-primary-600 dark:text-primary-400 text-3xl px-3 py-1 btn-press">‹</button>
     <p id="monthLabel" class="font-bold text-slate-700 dark:text-dark-text"></p>
     <button onclick="changeMonth(1)" class="text-primary-600 dark:text-primary-400 text-3xl px-3 py-1 btn-press">›</button>
   </div>
-
   <div class="grid grid-cols-3 gap-2 p-4">
-    <div class="bg-white dark:bg-dark-card rounded-xl p-3 text-center shadow-sm border border-slate-100 dark:border-dark-border">
-      <p class="text-xs text-slate-500 dark:text-dark-muted">Students</p>
-      <p id="totalStudents" class="text-xl font-bold text-primary-600 dark:text-primary-400">0</p>
-    </div>
-    <div class="bg-white dark:bg-dark-card rounded-xl p-3 text-center shadow-sm border border-slate-100 dark:border-dark-border">
-      <p class="text-xs text-slate-500 dark:text-dark-muted">Collected</p>
-      <p id="totalCollected" class="text-xl font-bold text-green-600">₹0</p>
-    </div>
-    <div class="bg-white dark:bg-dark-card rounded-xl p-3 text-center shadow-sm border border-slate-100 dark:border-dark-border">
-      <p class="text-xs text-slate-500 dark:text-dark-muted">Pending</p>
-      <p id="totalPending" class="text-xl font-bold text-red-600">₹0</p>
-    </div>
+    <div class="bg-white dark:bg-dark-card rounded-xl p-3 text-center shadow-sm border border-slate-100 dark:border-dark-border"><p class="text-xs text-slate-500 dark:text-dark-muted">Students</p><p id="totalStudents" class="text-xl font-bold text-primary-600 dark:text-primary-400">0</p></div>
+    <div class="bg-white dark:bg-dark-card rounded-xl p-3 text-center shadow-sm border border-slate-100 dark:border-dark-border"><p class="text-xs text-slate-500 dark:text-dark-muted">Collected</p><p id="totalCollected" class="text-xl font-bold text-green-600">₹0</p></div>
+    <div class="bg-white dark:bg-dark-card rounded-xl p-3 text-center shadow-sm border border-slate-100 dark:border-dark-border"><p class="text-xs text-slate-500 dark:text-dark-muted">Pending</p><p id="totalPending" class="text-xl font-bold text-red-600">₹0</p></div>
   </div>
-
   <div class="px-4 grid grid-cols-4 gap-2 mb-4">
-    <button onclick="show('addStudentScreen')"
-      class="bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-3 text-xs font-semibold btn-press transition-colors"
-      style="min-height:48px">+ Student</button>
-    <button onclick="openAttendance()"
-      class="bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 text-xs font-semibold btn-press transition-colors"
-      style="min-height:48px">✓ Attend</button>
-    <button onclick="show('homeworkScreen'); loadHomework()"
-      class="bg-purple-600 hover:bg-purple-700 text-white rounded-xl py-3 text-xs font-semibold btn-press transition-colors"
-      style="min-height:48px">📝 HW</button>
-    <button onclick="show('expensesScreen'); loadExpenses()"
-      class="bg-slate-700 hover:bg-slate-800 text-white rounded-xl py-3 text-xs font-semibold btn-press transition-colors"
-      style="min-height:48px">₹ Expense</button>
+    <button onclick="show('addStudentScreen')" class="bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-3 text-xs font-semibold btn-press transition-colors" style="min-height:48px">+ Student</button>
+    <button onclick="openAttendance()" class="bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 text-xs font-semibold btn-press transition-colors" style="min-height:48px">✓ Attend</button>
+    <button onclick="show('homeworkScreen'); loadHomework()" class="bg-purple-600 hover:bg-purple-700 text-white rounded-xl py-3 text-xs font-semibold btn-press transition-colors" style="min-height:48px">📝 HW</button>
+    <button onclick="show('expensesScreen'); loadExpenses()" class="bg-slate-700 hover:bg-slate-800 text-white rounded-xl py-3 text-xs font-semibold btn-press transition-colors" style="min-height:48px">₹ Expense</button>
   </div>
-
   <div id="studentList" class="px-4 pb-2"></div>
 </div>
 
 <!-- ══════════ STUDENTS LIST ══════════ -->
 <div id="studentsScreen" class="hidden max-w-md mx-auto p-4 pb-24 screen-transition">
   <h2 class="text-xl font-bold mb-3 dark:text-dark-text">Students</h2>
-  <input id="studentSearch" oninput="filterStudents()" placeholder="Search by name…"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+  <input id="studentSearch" oninput="filterStudents()" placeholder="Search by name…" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
   <div id="allStudents"></div>
 </div>
 
@@ -259,22 +212,12 @@
 <div id="addStudentScreen" class="hidden max-w-md mx-auto p-6 pb-24 screen-transition">
   <button onclick="show('appScreen')" class="text-primary-600 dark:text-primary-400 mb-4 text-base btn-press">← Back</button>
   <h2 class="text-xl font-bold mb-4 dark:text-dark-text">Add New Student</h2>
-  <input id="stuName" placeholder="Student Name *" maxlength="50"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
-  <input id="stuParentPhone" type="tel" placeholder="Parent Phone * (10 digits)" maxlength="10"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
-  <input id="stuStudentPhone" type="tel" placeholder="Student Phone (optional, 10 digits)" maxlength="10"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
-  <div class="relative mb-3">
-    <span class="absolute left-4 top-4 text-slate-500 dark:text-dark-muted text-base">₹</span>
-    <input id="stuFee" type="number" placeholder="Monthly Fee *"
-      class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 pl-8 text-base focus:border-primary-500 outline-none">
-  </div>
-  <input id="stuBatch" placeholder="Batch name (e.g. Morning, Class 10)"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-4 text-base focus:border-primary-500 outline-none">
-  <button onclick="addStudent()" id="addStuBtn"
-    class="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors"
-    style="min-height:52px">Save Student</button>
+  <input id="stuName" placeholder="Student Name *" maxlength="50" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+  <input id="stuParentPhone" type="tel" placeholder="Parent Phone * (10 digits)" maxlength="10" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+  <input id="stuStudentPhone" type="tel" placeholder="Student Phone (optional)" maxlength="10" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+  <div class="relative mb-3"><span class="absolute left-4 top-4 text-slate-500 dark:text-dark-muted text-base">₹</span><input id="stuFee" type="number" placeholder="Monthly Fee *" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 pl-8 text-base focus:border-primary-500 outline-none"></div>
+  <input id="stuBatch" placeholder="Batch name (e.g. Morning, Class 10)" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-4 text-base focus:border-primary-500 outline-none">
+  <button onclick="addStudent()" id="addStuBtn" class="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors" style="min-height:52px">Save Student</button>
 </div>
 
 <!-- ══════════ LOG PAYMENT ══════════ -->
@@ -283,30 +226,15 @@
   <h2 class="text-xl font-bold mb-1 dark:text-dark-text">Log Payment</h2>
   <p id="payStudentInfo" class="text-sm text-slate-500 dark:text-dark-muted mb-4"></p>
   <input type="hidden" id="payStudentId">
-  <div class="relative mb-3">
-    <span class="absolute left-4 top-4 text-slate-500">₹</span>
-    <input id="payAmount" type="number" placeholder="Amount Received"
-      class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 pl-8 text-base focus:border-primary-500 outline-none">
-  </div>
+  <div class="relative mb-3"><span class="absolute left-4 top-4 text-slate-500">₹</span><input id="payAmount" type="number" placeholder="Amount Received" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 pl-8 text-base focus:border-primary-500 outline-none"></div>
   <div class="flex gap-2 mb-3">
-    <button onclick="selectMode('Cash')" id="modeCash"
-      class="flex-1 border-2 border-slate-200 dark:border-dark-border rounded-xl py-3 font-medium text-sm btn-press dark:text-dark-text"
-      style="min-height:48px">💵 Cash</button>
-    <button onclick="selectMode('UPI')" id="modeUPI"
-      class="flex-1 border-2 border-slate-200 dark:border-dark-border rounded-xl py-3 font-medium text-sm btn-press dark:text-dark-text"
-      style="min-height:48px">📱 UPI</button>
-    <button onclick="selectMode('Bank')" id="modeBank"
-      class="flex-1 border-2 border-slate-200 dark:border-dark-border rounded-xl py-3 font-medium text-sm btn-press dark:text-dark-text"
-      style="min-height:48px">🏦 Bank</button>
+    <button onclick="selectMode('Cash')" id="modeCash" class="flex-1 border-2 border-slate-200 dark:border-dark-border rounded-xl py-3 font-medium text-sm btn-press dark:text-dark-text" style="min-height:48px">💵 Cash</button>
+    <button onclick="selectMode('UPI')" id="modeUPI" class="flex-1 border-2 border-slate-200 dark:border-dark-border rounded-xl py-3 font-medium text-sm btn-press dark:text-dark-text" style="min-height:48px">📱 UPI</button>
+    <button onclick="selectMode('Bank')" id="modeBank" class="flex-1 border-2 border-slate-200 dark:border-dark-border rounded-xl py-3 font-medium text-sm btn-press dark:text-dark-text" style="min-height:48px">🏦 Bank</button>
   </div>
-  <textarea id="payNote" maxlength="200"
-    placeholder="Note (optional) — Baaki shukravar ko dega"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base h-20 focus:border-primary-500 outline-none"></textarea>
-  <input id="payDate" type="date"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-4 text-base focus:border-primary-500 outline-none">
-  <button onclick="savePayment()" id="savePayBtn"
-    class="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors"
-    style="min-height:52px">Save Payment</button>
+  <textarea id="payNote" maxlength="200" placeholder="Note (optional)" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base h-20 focus:border-primary-500 outline-none"></textarea>
+  <input id="payDate" type="date" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-4 text-base focus:border-primary-500 outline-none">
+  <button onclick="savePayment()" id="savePayBtn" class="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors" style="min-height:52px">Save Payment</button>
 </div>
 
 <!-- ══════════ STUDENT DETAIL ══════════ -->
@@ -317,35 +245,21 @@
     <span id="detBatch" class="text-xs bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full"></span>
   </div>
   <div class="flex gap-2 mb-4">
-    <a id="detCall" href="#"
-      class="flex-1 text-center bg-green-600 text-white rounded-xl py-3 font-medium text-sm btn-press"
-      style="min-height:44px; line-height:20px; padding-top:12px">📞 Call</a>
-    <button onclick="waRemindDetail()"
-      class="flex-1 bg-green-500 text-white rounded-xl py-3 font-medium text-sm btn-press"
-      style="min-height:44px">💬 Remind</button>
-    <button onclick="generateReceipt()"
-      class="flex-1 bg-purple-600 text-white rounded-xl py-3 font-medium text-sm btn-press"
-      style="min-height:44px">🧾 Receipt</button>
-    <button onclick="deleteStudent()"
-      class="flex-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-xl py-3 font-medium text-sm btn-press"
-      style="min-height:44px">Remove</button>
+    <a id="detCall" href="#" class="flex-1 text-center bg-green-600 text-white rounded-xl py-3 font-medium text-sm btn-press" style="min-height:44px; line-height:20px; padding-top:12px">📞 Call</a>
+    <button onclick="waRemindDetail()" class="flex-1 bg-green-500 text-white rounded-xl py-3 font-medium text-sm btn-press" style="min-height:44px">💬 Remind</button>
+    <button onclick="generateReceipt()" class="flex-1 bg-purple-600 text-white rounded-xl py-3 font-medium text-sm btn-press" style="min-height:44px">🧾 Receipt</button>
+    <button onclick="deleteStudent()" class="flex-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-xl py-3 font-medium text-sm btn-press" style="min-height:44px">Remove</button>
   </div>
   <div id="detSummary" class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4"></div>
   <div class="flex border-b border-slate-200 dark:border-dark-border mb-4">
-    <button onclick="detTab('payments')" id="tabPayments"
-      class="flex-1 py-3 font-semibold text-primary-600 border-b-2 border-primary-600 text-sm">Payments</button>
-    <button onclick="detTab('attendance')" id="tabAttendance"
-      class="flex-1 py-3 text-slate-500 dark:text-dark-muted text-sm">Attendance</button>
-    <button onclick="detTab('notes')" id="tabNotes"
-      class="flex-1 py-3 text-slate-500 dark:text-dark-muted text-sm">Notes</button>
+    <button onclick="detTab('payments')" id="tabPayments" class="flex-1 py-3 font-semibold text-primary-600 border-b-2 border-primary-600 text-sm">Payments</button>
+    <button onclick="detTab('attendance')" id="tabAttendance" class="flex-1 py-3 text-slate-500 dark:text-dark-muted text-sm">Attendance</button>
+    <button onclick="detTab('notes')" id="tabNotes" class="flex-1 py-3 text-slate-500 dark:text-dark-muted text-sm">Notes</button>
   </div>
   <div id="detPayments"></div>
   <div id="detAttendance" class="hidden"></div>
   <div id="detNotes" class="hidden">
-    <textarea id="stuNotes" maxlength="500"
-      placeholder="Private notes — e.g. Struggling with trigonometry"
-      class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 h-36 text-base focus:border-primary-500 outline-none"
-      oninput="saveNotes()"></textarea>
+    <textarea id="stuNotes" maxlength="500" placeholder="Private notes — e.g. Struggling with trigonometry" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 h-36 text-base focus:border-primary-500 outline-none" oninput="saveNotes()"></textarea>
     <p class="text-xs text-slate-400 dark:text-dark-muted mt-1">Auto-saves as you type</p>
   </div>
 </div>
@@ -354,27 +268,16 @@
 <div id="homeworkScreen" class="hidden max-w-md mx-auto p-4 pb-24 screen-transition">
   <button onclick="show('appScreen')" class="text-primary-600 dark:text-primary-400 mb-3 text-base btn-press">← Back</button>
   <h2 class="text-xl font-bold mb-3 dark:text-dark-text">📝 Homework</h2>
-  <input id="hwDate" type="date"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base focus:border-primary-500 outline-none">
-  <select id="hwBatch"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base">
-    <option value="">All Batches</option>
-  </select>
-  <input id="hwSubject" placeholder="Subject (e.g. Maths, Science)" maxlength="50"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base focus:border-primary-500 outline-none">
-  <textarea id="hwText" maxlength="500" placeholder="Today's homework..."
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base h-28 focus:border-primary-500 outline-none"></textarea>
-  <input id="hwTopic" placeholder="Today's topic covered (optional)" maxlength="100"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base focus:border-primary-500 outline-none">
-  <input id="hwLink" type="url" placeholder="YouTube/Drive link (optional)"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base focus:border-primary-500 outline-none">
-  <div class="grid grid-cols-2 gap-2 mb-4">
-    <button onclick="saveHomework()"
-      class="bg-purple-600 hover:bg-purple-700 text-white rounded-xl py-3 font-semibold text-sm btn-press transition-colors"
-      style="min-height:48px">Save Homework</button>
-    <button onclick="shareHomeworkWA()"
-      class="bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 font-semibold text-sm btn-press transition-colors"
-      style="min-height:48px">📤 WhatsApp</button>
+  <input id="hwDate" type="date" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base focus:border-primary-500 outline-none">
+  <select id="hwBatch" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base"><option value="">All Batches</option></select>
+  <input id="hwSubject" placeholder="Subject (e.g. Maths, Science)" maxlength="50" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base focus:border-primary-500 outline-none">
+  <textarea id="hwText" maxlength="500" placeholder="Today's homework..." class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base h-28 focus:border-primary-500 outline-none"></textarea>
+  <input id="hwTopic" placeholder="Today's topic covered (optional)" maxlength="100" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base focus:border-primary-500 outline-none">
+  <input id="hwLink" type="url" placeholder="YouTube/Drive link (optional)" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base focus:border-primary-500 outline-none">
+  <div class="grid grid-cols-3 gap-2 mb-4">
+    <button onclick="saveHomework()" class="bg-purple-600 hover:bg-purple-700 text-white rounded-xl py-3 font-semibold text-xs btn-press transition-colors" style="min-height:48px">💾 Save</button>
+    <button onclick="shareHomeworkWA()" class="bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 font-semibold text-xs btn-press transition-colors" style="min-height:48px">💬 Text Only</button>
+    <button onclick="shareHomeworkWithFile()" class="bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 font-semibold text-xs btn-press transition-colors" style="min-height:48px">📎 + Photo</button>
   </div>
   <div id="hwList"></div>
 </div>
@@ -389,17 +292,10 @@
       <button onclick="overrideHoliday()" class="text-xs bg-yellow-500 text-white px-3 py-1 rounded-lg btn-press">Class today? Mark →</button>
     </div>
   </div>
-  <input id="attDate" type="date"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base focus:border-primary-500 outline-none"
-    onchange="loadAttendance()">
-  <select id="attBatch" onchange="loadAttendance()"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base">
-    <option value="">All Batches</option>
-  </select>
+  <input id="attDate" type="date" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base focus:border-primary-500 outline-none" onchange="loadAttendance()">
+  <select id="attBatch" onchange="loadAttendance()" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base"><option value="">All Batches</option></select>
   <div id="attList"></div>
-  <button onclick="saveAttendance()" id="saveAttBtn"
-    class="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl py-4 font-semibold mt-3 text-base btn-press transition-colors"
-    style="min-height:52px">Save Attendance</button>
+  <button onclick="saveAttendance()" id="saveAttBtn" class="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl py-4 font-semibold mt-3 text-base btn-press transition-colors" style="min-height:52px">Save Attendance</button>
 </div>
 
 <!-- ══════════ EXPENSES ══════════ -->
@@ -407,20 +303,10 @@
   <button onclick="show('appScreen')" class="text-primary-600 dark:text-primary-400 mb-3 text-base btn-press">← Back</button>
   <h2 class="text-xl font-bold mb-3 dark:text-dark-text">Expenses</h2>
   <div id="profitCard" class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4"></div>
-  <input id="expDesc" placeholder="Description (e.g. Whiteboard markers)" maxlength="80"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-2 text-base focus:border-primary-500 outline-none">
-  <div class="relative mb-2">
-    <span class="absolute left-4 top-3 text-slate-500">₹</span>
-    <input id="expAmount" type="number" placeholder="Amount"
-      class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 pl-8 text-base focus:border-primary-500 outline-none">
-  </div>
-  <select id="expCat"
-    class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base">
-    <option>Rent</option><option>Supplies</option><option>Printing</option><option>Transport</option><option>Other</option>
-  </select>
-  <button onclick="addExpense()"
-    class="w-full bg-slate-700 hover:bg-slate-800 text-white rounded-xl py-3 font-semibold mb-4 text-base btn-press transition-colors"
-    style="min-height:48px">Add Expense</button>
+  <input id="expDesc" placeholder="Description (e.g. Whiteboard markers)" maxlength="80" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-2 text-base focus:border-primary-500 outline-none">
+  <div class="relative mb-2"><span class="absolute left-4 top-3 text-slate-500">₹</span><input id="expAmount" type="number" placeholder="Amount" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 pl-8 text-base focus:border-primary-500 outline-none"></div>
+  <select id="expCat" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base"><option>Rent</option><option>Supplies</option><option>Printing</option><option>Transport</option><option>Other</option></select>
+  <button onclick="addExpense()" class="w-full bg-slate-700 hover:bg-slate-800 text-white rounded-xl py-3 font-semibold mb-4 text-base btn-press transition-colors" style="min-height:48px">Add Expense</button>
   <div id="expList"></div>
 </div>
 
@@ -430,9 +316,7 @@
   <p id="repMonth" class="text-sm text-slate-500 dark:text-dark-muted mb-4"></p>
   <div id="repSummary" class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4"></div>
   <div id="repTable" class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4"></div>
-  <button onclick="exportReport()"
-    class="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors"
-    style="min-height:52px">📤 Export via WhatsApp (Pro)</button>
+  <button onclick="exportReport()" class="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors" style="min-height:52px">📤 Export via WhatsApp (Pro)</button>
 </div>
 
 <!-- ══════════ SETTINGS ══════════ -->
@@ -441,29 +325,18 @@
   <div id="proCard" class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4"></div>
   <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4">
     <p class="font-semibold mb-1 dark:text-dark-text">Your Payment Code</p>
-    <p class="text-xs text-slate-500 dark:text-dark-muted mb-2">
-      Plot twist: this app's developer can't even set up a UPI ID 💀 (minor problem, literally 😅).
-      Email your code below to
-      <a href="mailto:frankmanvideo@gmail.com" class="text-primary-600 dark:text-primary-400 font-semibold underline">frankmanvideo@gmail.com</a>
-      and I'll manually activate Pro for you — trustworthy, mummy-approved 😂🙏</p>
+    <p class="text-xs text-slate-500 dark:text-dark-muted mb-2">Plot twist: this app's developer can't even set up a UPI ID 💀 (minor problem, literally 😅). Email your code below to <a href="mailto:frankmanvideo@gmail.com" class="text-primary-600 dark:text-primary-400 font-semibold underline">frankmanvideo@gmail.com</a> and I'll manually activate Pro for you — trustworthy, mummy-approved 😂🙏</p>
     <p id="myCode" class="text-xl font-mono font-bold text-primary-600 dark:text-primary-400 mb-3">Loading…</p>
     <div class="flex gap-2 mb-3">
-      <button onclick="copyCode()"
-        class="flex-1 bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-3 font-medium text-sm btn-press transition-colors">Copy Code</button>
-      <a id="bmcLink" href="mailto:frankmanvideo@gmail.com?subject=FeeBook Pro Request" target="_blank"
-        class="flex-1 text-center bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl py-3 font-medium text-sm btn-press transition-colors"
-        style="line-height:20px; padding-top:10px">Email for Pro →</a>
+      <button onclick="copyCode()" class="flex-1 bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-3 font-medium text-sm btn-press transition-colors">Copy Code</button>
+      <a id="bmcLink" href="mailto:frankmanvideo@gmail.com?subject=FeeBook Pro Request" target="_blank" class="flex-1 text-center bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl py-3 font-medium text-sm btn-press transition-colors" style="line-height:20px; padding-top:10px">Email for Pro →</a>
     </div>
     <p class="text-xs text-slate-400 dark:text-dark-muted mb-1">Got an activation code from admin via email? Enter it here:</p>
     <div class="flex gap-2">
-      <input id="manualCode" placeholder="FB-XXXX-XXXXX"
-        class="flex-1 border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 font-mono text-sm focus:border-primary-500 outline-none">
-      <button onclick="activateManual()"
-        class="bg-green-600 hover:bg-green-700 text-white rounded-xl px-4 font-medium text-sm btn-press transition-colors">Activate</button>
+      <input id="manualCode" placeholder="FB-XXXX-XXXXX" class="flex-1 border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 font-mono text-sm focus:border-primary-500 outline-none">
+      <button onclick="activateManual()" class="bg-green-600 hover:bg-green-700 text-white rounded-xl px-4 font-medium text-sm btn-press transition-colors">Activate</button>
     </div>
   </div>
-
-  <!-- Holiday Settings -->
   <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4">
     <p class="font-semibold mb-2 dark:text-dark-text">📅 Working Days</p>
     <p class="text-xs text-slate-500 dark:text-dark-muted mb-3">Select your class days. Attendance auto-skips off days.</p>
@@ -477,58 +350,40 @@
       <button onclick="toggleWorkDay(6)" id="wd6" class="flex-1 text-xs py-2 rounded-lg border-2 border-slate-200 dark:border-dark-border text-slate-500 dark:text-dark-muted btn-press">Sat</button>
     </div>
   </div>
-
   <div id="accountCard" class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4"></div>
   <div id="referralCard" class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4"></div>
   <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4">
     <p class="font-semibold mb-2 dark:text-dark-text">Support</p>
-    <a href="https://wa.me/919973898852?text=Hi!%20I%20need%20help%20with%20FeeBook"
-      target="_blank"
-      class="block text-center bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 font-medium btn-press transition-colors">💬 WhatsApp Support</a>
+    <a href="https://wa.me/919973898852?text=Hi!%20I%20need%20help%20with%20FeeBook" target="_blank" class="block text-center bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 font-medium btn-press transition-colors">💬 WhatsApp Support</a>
     <p class="text-xs text-slate-400 dark:text-dark-muted mt-1 text-center">Usually replies within 24 hours</p>
   </div>
   <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4">
     <p class="font-semibold mb-1 dark:text-dark-text">About</p>
-    <p class="text-sm text-slate-500 dark:text-dark-muted">
-      FeeBook v3.0<br>
-      Built by an 11th grade student for Indian tuition teachers 🇮🇳</p>
+    <p class="text-sm text-slate-500 dark:text-dark-muted">FeeBook v3.0<br>Built by an 11th grade student for Indian tuition teachers 🇮🇳</p>
   </div>
-  <button onclick="doLogout()"
-    class="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl py-4 font-semibold text-base mt-2 btn-press transition-colors"
-    style="min-height:52px">Logout</button>
+  <button onclick="doLogout()" class="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl py-4 font-semibold text-base mt-2 btn-press transition-colors" style="min-height:52px">Logout</button>
 </div>
 
 <!-- BOTTOM NAV -->
-<div id="bottomNav"
-  class="hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-card border-t border-slate-200 dark:border-dark-border max-w-md mx-auto flex justify-around py-2 z-40">
-  <button onclick="show('appScreen')"
-    class="flex flex-col items-center text-primary-600 dark:text-primary-400 text-xs font-medium py-1 px-3 btn-press">
-    🏠<span class="mt-1">Home</span></button>
-  <button onclick="show('studentsScreen')"
-    class="flex flex-col items-center text-slate-500 dark:text-dark-muted text-xs font-medium py-1 px-3 btn-press">
-    👥<span class="mt-1">Students</span></button>
-  <button onclick="show('reportsScreen'); renderReports()"
-    class="flex flex-col items-center text-slate-500 dark:text-dark-muted text-xs font-medium py-1 px-3 btn-press">
-    📊<span class="mt-1">Reports</span></button>
-  <button onclick="show('settingsScreen'); renderSettings()"
-    class="flex flex-col items-center text-slate-500 dark:text-dark-muted text-xs font-medium py-1 px-3 btn-press">
-    ⚙️<span class="mt-1">Settings</span></button>
+<div id="bottomNav" class="hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-card border-t border-slate-200 dark:border-dark-border max-w-md mx-auto flex justify-around py-2 z-40">
+  <button onclick="show('appScreen')" class="flex flex-col items-center text-primary-600 dark:text-primary-400 text-xs font-medium py-1 px-3 btn-press">🏠<span class="mt-1">Home</span></button>
+  <button onclick="show('studentsScreen')" class="flex flex-col items-center text-slate-500 dark:text-dark-muted text-xs font-medium py-1 px-3 btn-press">👥<span class="mt-1">Students</span></button>
+  <button onclick="show('reportsScreen'); renderReports()" class="flex flex-col items-center text-slate-500 dark:text-dark-muted text-xs font-medium py-1 px-3 btn-press">📊<span class="mt-1">Reports</span></button>
+  <button onclick="show('settingsScreen'); renderSettings()" class="flex flex-col items-center text-slate-500 dark:text-dark-muted text-xs font-medium py-1 px-3 btn-press">⚙️<span class="mt-1">Settings</span></button>
 </div>
 
   <script>
 'use strict';
 
-/* ═══════════════════════════════════════
-   CACHE SYSTEM
-═══════════════════════════════════════ */
+/* ===== Helpers / Cache ===== */
 const CACHE_TTL = 5 * 60 * 1000;
+const ym = d => d.toISOString().slice(0, 7);
+const clean = s => (s || '').replace(/[<>"'&]/g, '').trim();
 
 function cacheSet(key, data) {
-  try {
-    localStorage.setItem('fb_' + key, JSON.stringify({ data, ts: Date.now() }));
-  } catch(e) { clearOldCache(); }
+  try { localStorage.setItem('fb_' + key, JSON.stringify({ data, ts: Date.now() })); }
+  catch { clearOldCache(); }
 }
-
 function cacheGet(key, maxAge = CACHE_TTL) {
   try {
     const raw = localStorage.getItem('fb_' + key);
@@ -536,18 +391,14 @@ function cacheGet(key, maxAge = CACHE_TTL) {
     const { data, ts } = JSON.parse(raw);
     if (Date.now() - ts > maxAge) return null;
     return data;
-  } catch(e) { return null; }
+  } catch { return null; }
 }
-
 function cacheInvalidate(key) { localStorage.removeItem('fb_' + key); }
-
 function clearOldCache() {
   Object.keys(localStorage).filter(k => k.startsWith('fb_')).forEach(k => localStorage.removeItem(k));
 }
 
-/* ═══════════════════════════════════════
-   APP GLOBALS
-═══════════════════════════════════════ */
+/* ===== Globals ===== */
 let sb = null;
 let user = null, profile = null;
 let students = [], payments = [];
@@ -558,16 +409,16 @@ let sessionHandled = false;
 let attState = {};
 let notesTimer = null;
 let BMC_PAGE = '#';
+
 let deferredPwaPrompt = null;
 let workingDays = [1,2,3,4,5]; // Mon-Fri default
 let holidayOverride = false;
 
+// Simple built-in holiday list (you can extend yearly)
 const INDIAN_HOLIDAYS_2025 = [
-  '2025-01-26','2025-03-17','2025-04-14','2025-04-18',
-  '2025-05-12','2025-08-15','2025-10-02','2025-10-20',
-  '2025-10-23','2025-11-05','2025-12-25'
+  '2025-01-26','2025-03-17','2025-04-14','2025-04-18','2025-05-12',
+  '2025-08-15','2025-10-02','2025-10-20','2025-10-23','2025-11-05','2025-12-25'
 ];
-
 const HOLIDAY_NAMES = {
   '2025-01-26':'Republic Day 🇮🇳',
   '2025-03-17':'Holi 🎨',
@@ -582,20 +433,74 @@ const HOLIDAY_NAMES = {
   '2025-12-25':'Christmas 🎄'
 };
 
-const ym = d => d.toISOString().slice(0, 7);
-const clean = s => (s || '').replace(/[<>"'&]/g, '').trim();
+/* ===== UI ===== */
+const SCREENS = [
+  'authScreen','appScreen','studentsScreen','addStudentScreen',
+  'logPaymentScreen','studentDetailScreen','attendanceScreen',
+  'expensesScreen','reportsScreen','settingsScreen','homeworkScreen'
+];
 
-/* ═══════════════════════════════════════
-   DARK MODE
-═══════════════════════════════════════ */
+function toast(msg, color = 'bg-green-600', onClick = null) {
+  const t = document.getElementById('toast');
+  t.className = `fixed top-4 left-1/2 -translate-x-1/2 ${color} text-white px-5 py-3 rounded-xl shadow-lg z-50 max-w-sm text-sm text-center ${onClick ? 'cursor-pointer' : ''}`;
+  t.textContent = msg;
+  t.onclick = onClick || null;
+  t.classList.remove('hidden');
+  clearTimeout(t._h);
+  t._h = setTimeout(() => {
+    t.classList.add('hidden');
+    t.onclick = null;
+  }, onClick ? 10000 : 3000);
+}
+
+function show(id) {
+  SCREENS.forEach(s => {
+    const el = document.getElementById(s);
+    if (el) el.classList.add('hidden');
+  });
+  const target = document.getElementById(id);
+  if (target) {
+    target.classList.remove('hidden');
+    target.classList.add('screen-transition');
+  }
+  const hideNav = ['authScreen','addStudentScreen','logPaymentScreen'];
+  document.getElementById('bottomNav').classList.toggle('hidden', hideNav.includes(id));
+  if (id === 'appScreen') renderDashboard();
+  if (id === 'studentsScreen') renderStudents();
+}
+
+function toggleAuth() {
+  document.getElementById('loginForm').classList.toggle('hidden');
+  document.getElementById('registerForm').classList.toggle('hidden');
+  document.getElementById('forgotForm').classList.add('hidden');
+  document.getElementById('authError').textContent = '';
+}
+function showForgotPassword() {
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('registerForm').classList.add('hidden');
+  document.getElementById('forgotForm').classList.remove('hidden');
+  document.getElementById('authError').textContent = '';
+}
+function showLoginForm() {
+  document.getElementById('loginForm').classList.remove('hidden');
+  document.getElementById('registerForm').classList.add('hidden');
+  document.getElementById('forgotForm').classList.add('hidden');
+  document.getElementById('authError').textContent = '';
+}
+
+function hideLoading() {
+  document.getElementById('loadingScreen').style.display = 'none';
+}
+
+/* ===== Dark Mode ===== */
 function initDarkMode() {
   const saved = localStorage.getItem('fb_darkmode');
   const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
   const isDark = saved !== null ? saved === 'true' : prefersDark;
   document.documentElement.classList.toggle('dark', isDark);
-  document.getElementById('darkToggle').textContent = isDark ? '☀️' : '🌙';
+  const btn = document.getElementById('darkToggle');
+  if (btn) btn.textContent = isDark ? '☀️' : '🌙';
 }
-
 function toggleDarkMode() {
   const isDark = document.documentElement.classList.toggle('dark');
   localStorage.setItem('fb_darkmode', isDark);
@@ -603,18 +508,14 @@ function toggleDarkMode() {
   document.getElementById('themeColor').content = isDark ? '#0f172a' : '#2563EB';
 }
 
-/* ═══════════════════════════════════════
-   PWA INSTALL
-═══════════════════════════════════════ */
+/* ===== PWA Install Prompt ===== */
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPwaPrompt = e;
   const dismissed = localStorage.getItem('fb_pwa_dismissed');
   const installed = localStorage.getItem('fb_pwa_installed');
   if (!dismissed && !installed) {
-    setTimeout(() => {
-      document.getElementById('pwaPrompt').classList.remove('hidden');
-    }, 3000);
+    setTimeout(() => document.getElementById('pwaPrompt').classList.remove('hidden'), 2500);
   }
 });
 
@@ -626,7 +527,7 @@ window.addEventListener('appinstalled', () => {
 
 function installPwa() {
   if (!deferredPwaPrompt) {
-    toast('To install: tap browser menu → "Add to Home Screen"', 'bg-slate-700');
+    toast('To install: browser menu → "Add to Home Screen"', 'bg-slate-700');
     closePwa();
     return;
   }
@@ -637,15 +538,37 @@ function installPwa() {
     closePwa();
   });
 }
-
 function closePwa() {
   document.getElementById('pwaPrompt').classList.add('hidden');
   localStorage.setItem('fb_pwa_dismissed', 'true');
 }
 
-/* ═══════════════════════════════════════
-   INIT
-═══════════════════════════════════════ */
+/* ===== Working days (local only) ===== */
+function loadWorkingDays() {
+  const saved = localStorage.getItem('fb_working_days');
+  if (saved) workingDays = JSON.parse(saved);
+  updateWorkingDayUI();
+}
+function toggleWorkDay(day) {
+  const idx = workingDays.indexOf(day);
+  if (idx > -1) workingDays.splice(idx, 1);
+  else workingDays.push(day);
+  localStorage.setItem('fb_working_days', JSON.stringify(workingDays));
+  updateWorkingDayUI();
+}
+function updateWorkingDayUI() {
+  [0,1,2,3,4,5,6].forEach(d => {
+    const btn = document.getElementById('wd' + d);
+    if (!btn) return;
+    if (workingDays.includes(d)) {
+      btn.className = 'flex-1 text-xs py-2 rounded-lg border-2 border-primary-600 bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300 btn-press';
+    } else {
+      btn.className = 'flex-1 text-xs py-2 rounded-lg border-2 border-slate-200 dark:border-dark-border text-slate-500 dark:text-dark-muted btn-press';
+    }
+  });
+}
+
+/* ===== Init (Supabase config from /api/config) ===== */
 async function initApp() {
   initDarkMode();
   loadWorkingDays();
@@ -684,86 +607,18 @@ async function initApp() {
   }
 }
 
-function hideLoading() {
-  document.getElementById('loadingScreen').style.display = 'none';
-}
-
-/* ═══════════════════════════════════════
-   NAVIGATION
-═══════════════════════════════════════ */
-const SCREENS = [
-  'authScreen','appScreen','studentsScreen','addStudentScreen',
-  'logPaymentScreen','studentDetailScreen','attendanceScreen',
-  'expensesScreen','reportsScreen','settingsScreen','homeworkScreen'
-];
-
-function show(id) {
-  SCREENS.forEach(s => {
-    const el = document.getElementById(s);
-    if (el) el.classList.add('hidden');
-  });
-  const target = document.getElementById(id);
-  if (target) {
-    target.classList.remove('hidden');
-    target.classList.add('screen-transition');
-  }
-  const hideNav = ['authScreen','addStudentScreen','logPaymentScreen'];
-  const nav = document.getElementById('bottomNav');
-  if (nav) nav.classList.toggle('hidden', hideNav.includes(id));
-  if (id === 'appScreen') renderDashboard();
-  if (id === 'studentsScreen') renderStudents();
-}
-
-function toggleAuth() {
-  document.getElementById('loginForm').classList.toggle('hidden');
-  document.getElementById('registerForm').classList.toggle('hidden');
-  document.getElementById('forgotForm').classList.add('hidden');
-  document.getElementById('authError').textContent = '';
-}
-
-function showForgotPassword() {
-  document.getElementById('loginForm').classList.add('hidden');
-  document.getElementById('registerForm').classList.add('hidden');
-  document.getElementById('forgotForm').classList.remove('hidden');
-  document.getElementById('authError').textContent = '';
-}
-
-function showLoginForm() {
-  document.getElementById('loginForm').classList.remove('hidden');
-  document.getElementById('registerForm').classList.add('hidden');
-  document.getElementById('forgotForm').classList.add('hidden');
-  document.getElementById('authError').textContent = '';
-}
-
-/* ═══════════════════════════════════════
-   TOAST
-═══════════════════════════════════════ */
-function toast(msg, color = 'bg-green-600', onClick = null) {
-  const t = document.getElementById('toast');
-  t.className = `fixed top-4 left-1/2 -translate-x-1/2 ${color} text-white px-5 py-3 rounded-xl shadow-lg z-50 max-w-sm text-sm text-center ${onClick ? 'cursor-pointer' : ''}`;
-  t.textContent = msg;
-  t.onclick = onClick || null;
-  t.classList.remove('hidden');
-  clearTimeout(t._h);
-  t._h = setTimeout(() => {
-    t.classList.add('hidden');
-    t.onclick = null;
-  }, onClick ? 10000 : 3000);
-}
-
-/* ═══════════════════════════════════════
-   AUTH
-═══════════════════════════════════════ */
+/* ===== AUTH ===== */
 async function doGoogleLogin() {
   const errEl = document.getElementById('authError');
   errEl.textContent = 'Redirecting to Google…';
+
   const { error } = await sb.auth.signInWithOAuth({
     provider: 'google',
     options: {
-      redirectTo: window.location.origin,
-      queryParams: { access_type: 'offline', prompt: 'consent' }
+      redirectTo: window.location.origin
     }
   });
+
   if (error) errEl.textContent = error.message;
 }
 
@@ -788,31 +643,21 @@ async function doRegister() {
 
   errEl.textContent = 'Setting up profile…';
 
-  // Wait for session
+  // Wait for session to exist (RLS needs auth.uid())
   let sessionReady = false;
   for (let i = 0; i < 15; i++) {
     const { data: { session } } = await sb.auth.getSession();
     if (session?.user?.id === data.user.id) { sessionReady = true; break; }
     await new Promise(r => setTimeout(r, 300));
   }
+  if (!sessionReady) return errEl.textContent = 'Session setup timeout. Please login manually.';
 
-  if (!sessionReady) {
-    errEl.textContent = 'Session setup timeout. Please login manually.';
-    return;
-  }
-
-  const { error: profileError } = await sb.from('profiles')
-    .upsert({ id: data.user.id, name, phone });
-
-  if (profileError) {
-    console.error('Profile save failed:', profileError);
-    errEl.textContent = 'Profile save failed: ' + profileError.message;
-    return;
-  }
+  const { error: profileError } = await sb.from('profiles').upsert({ id: data.user.id, name, phone });
+  if (profileError) return errEl.textContent = 'Profile save failed: ' + profileError.message;
 
   if (ref) {
     try { await sb.rpc('process_referral', { p_code: ref }); }
-    catch(e) { console.warn('Referral failed:', e); }
+    catch (e) { console.warn('Referral failed:', e); }
   }
 
   errEl.textContent = '';
@@ -839,19 +684,17 @@ async function doLogin() {
 async function doForgotPassword() {
   const email = document.getElementById('forgotEmail').value.trim();
   const errEl = document.getElementById('authError');
-
   if (!email.includes('@')) return errEl.textContent = 'Enter a valid email address';
+
   errEl.textContent = 'Sending reset link…';
-
   const { error } = await sb.auth.resetPasswordForEmail(email, {
-    redirectTo: window.location.origin + '?reset=true'
+    redirectTo: window.location.origin + '/?reset=true'
   });
-
   if (error) return errEl.textContent = error.message;
 
   errEl.textContent = '';
-  toast('✅ Reset link sent! Check your email inbox (and spam folder)', 'bg-green-600');
-  setTimeout(() => showLoginForm(), 2000);
+  toast('✅ Reset link sent! Check inbox + spam', 'bg-green-600');
+  setTimeout(() => showLoginForm(), 1500);
 }
 
 async function doLogout() {
@@ -860,14 +703,15 @@ async function doLogout() {
   location.reload();
 }
 
-/* ═══════════════════════════════════════
-   LOAD APP
-═══════════════════════════════════════ */
+/* ===== LOAD APP ===== */
 async function loadApp() {
   hideLoading();
+
+  // fetch profile
   const { data } = await sb.from('profiles').select('*').eq('id', user.id).single();
   profile = data || { name: user.user_metadata?.full_name || 'Teacher', phone: '' };
 
+  // if google login + profile missing, backfill name
   if ((!data || !data.name) && user.user_metadata?.full_name) {
     await sb.from('profiles').upsert({
       id: user.id,
@@ -877,19 +721,26 @@ async function loadApp() {
     profile.name = user.user_metadata.full_name;
   }
 
-  document.getElementById('teacherName').textContent = '👋 ' + profile.name;
+  document.getElementById('teacherName').textContent = '👋 ' + (profile.name || 'Teacher');
+
   await refreshPro();
   show('appScreen');
   renderSettings();
+
+  // Handle manifest shortcuts like /?action=add-student
+  try {
+    const p = new URLSearchParams(location.search);
+    const action = p.get('action');
+    if (action === 'add-student') show('addStudentScreen');
+    if (action === 'attendance') openAttendance();
+    if (action) history.replaceState({}, '', location.pathname);
+  } catch {}
 }
 
-/* ═══════════════════════════════════════
-   PRO CHECK
-═══════════════════════════════════════ */
+/* ===== PRO CHECK ===== */
 async function refreshPro() {
   const cacheKey = `pro_${user.id}`;
   let isPro = cacheGet(cacheKey, 60000);
-
   if (isPro === null) {
     const { data } = await sb.rpc('check_pro_status');
     isPro = !!data;
@@ -897,12 +748,14 @@ async function refreshPro() {
   }
 
   window.proCached = isPro;
+
   const badge = document.getElementById('proBadge');
   badge.textContent = isPro ? 'PRO ✨' : 'FREE';
   badge.className = isPro
     ? 'text-xs bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full font-bold'
     : 'text-xs bg-white/20 px-3 py-1 rounded-full font-medium';
 
+  // expiry banner
   const { data: subs } = await sb.from('subscriptions')
     .select('expiry_date').eq('teacher_id', user.id)
     .order('expiry_date', { ascending: false }).limit(1);
@@ -919,14 +772,12 @@ async function refreshPro() {
     } else banner.classList.add('hidden');
   } else if (subs?.[0] && !isPro) {
     banner.className = 'mx-4 mt-3 rounded-xl p-3 text-sm font-medium bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400';
-    banner.textContent = `Pro expired — your data is safe. Email frankmanvideo@gmail.com to renew ₹99`;
+    banner.textContent = 'Pro expired — your data is safe. Email frankmanvideo@gmail.com to renew ₹99';
     banner.classList.remove('hidden');
   } else banner.classList.add('hidden');
 }
 
-/* ═══════════════════════════════════════
-   DASHBOARD DATA
-═══════════════════════════════════════ */
+/* ===== Dashboard Data ===== */
 async function loadDashboardData(forceRefresh = false) {
   const cacheKey = `dashboard_${user.id}_${ym(month)}`;
   if (!forceRefresh) {
@@ -954,9 +805,11 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-/* ═══════════════════════════════════════
-   DASHBOARD RENDER
-═══════════════════════════════════════ */
+/* ===== Dashboard Render ===== */
+function getPaid(sid) {
+  return payments.filter(p => p.student_id === sid).reduce((t, p) => t + parseFloat(p.amount), 0);
+}
+
 function changeMonth(delta) {
   const now = new Date();
   const newMonth = new Date(month.getFullYear(), month.getMonth() + delta);
@@ -973,6 +826,7 @@ function changeMonth(delta) {
       return;
     }
   }
+
   month = newMonth;
   renderDashboard();
 }
@@ -1048,13 +902,7 @@ async function renderDashboard() {
   document.getElementById('totalPending').textContent = '₹' + pen.toLocaleString('en-IN');
 }
 
-function getPaid(sid) {
-  return payments.filter(p => p.student_id === sid).reduce((t, p) => t + parseFloat(p.amount), 0);
-}
-
-/* ═══════════════════════════════════════
-   STUDENTS
-═══════════════════════════════════════ */
+/* ===== Students ===== */
 async function loadStudents(forceRefresh = false) {
   const cacheKey = `students_${user.id}`;
   if (!forceRefresh) {
@@ -1113,30 +961,38 @@ async function addStudent() {
   const btn = document.getElementById('addStuBtn');
   btn.disabled = true; btn.textContent = 'Saving…';
 
+  // Try insert with student_phone; if column doesn't exist, retry without it
   const insertData = {
-    teacher_id: user.id, name, parent_phone: phone,
-    monthly_fee: fee, batch_name: batch
+    teacher_id: user.id,
+    name,
+    parent_phone: phone,
+    monthly_fee: fee,
+    batch_name: batch
   };
   if (stuPhone) insertData.student_phone = stuPhone;
 
-  const { error } = await sb.from('students').insert(insertData);
+  let { error } = await sb.from('students').insert(insertData);
+
+  if (error && String(error.message || '').toLowerCase().includes('student_phone')) {
+    // retry without student_phone
+    delete insertData.student_phone;
+    const retry = await sb.from('students').insert(insertData);
+    error = retry.error;
+  }
+
   btn.disabled = false; btn.textContent = 'Save Student';
   if (error) return toast(error.message, 'bg-red-600');
 
   cacheInvalidate(`students_${user.id}`);
   cacheInvalidate(`dashboard_${user.id}_${ym(month)}`);
 
-  ['stuName','stuParentPhone','stuStudentPhone','stuFee','stuBatch'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
+  ['stuName','stuParentPhone','stuStudentPhone','stuFee','stuBatch'].forEach(id => document.getElementById(id).value = '');
 
   toast('Student added ✓');
   show('appScreen');
 }
 
-/* ═══════════════════════════════════════
-   PAYMENTS
-═══════════════════════════════════════ */
+/* ===== Payments ===== */
 function openLog(sid) {
   const s = students.find(x => x.id === sid) || {};
   const p = getPaid(sid);
@@ -1178,11 +1034,17 @@ async function savePayment() {
 
   const client_id = crypto.randomUUID();
   const row = {
-    client_id, student_id: sid, teacher_id: user.id,
-    amount: amt, payment_mode: selectedMode, note, payment_date: date
+    client_id,
+    student_id: sid,
+    teacher_id: user.id,
+    amount: amt,
+    payment_mode: selectedMode,
+    note,
+    payment_date: date
   };
 
   const saved = await savePaymentRow(row);
+
   btn.disabled = false; btn.textContent = 'Save Payment';
 
   cacheInvalidate(`dashboard_${user.id}_${ym(month)}`);
@@ -1200,6 +1062,7 @@ async function savePayment() {
   } else {
     toast('Saved offline — will sync when online', 'bg-yellow-600');
   }
+
   show('appScreen');
 }
 
@@ -1210,16 +1073,13 @@ async function savePaymentRow(row) {
   return true;
 }
 
-/* ═══════════════════════════════════════
-   OFFLINE QUEUE
-═══════════════════════════════════════ */
+/* ===== Offline Queue for payments ===== */
 function offlineQueue(row) {
   const q = JSON.parse(localStorage.getItem('fb_offline_queue') || '[]');
   q.push(row);
   localStorage.setItem('fb_offline_queue', JSON.stringify(q));
   updateOfflineBanner();
 }
-
 async function flushOfflineQueue() {
   if (!navigator.onLine) return;
   const q = JSON.parse(localStorage.getItem('fb_offline_queue') || '[]');
@@ -1233,7 +1093,6 @@ async function flushOfflineQueue() {
   if (synced > 0) toast(`Synced ${synced} offline payment${synced > 1 ? 's' : ''} ✓`);
   updateOfflineBanner();
 }
-
 function updateOfflineBanner() {
   const q = JSON.parse(localStorage.getItem('fb_offline_queue') || '[]');
   const banner = document.getElementById('offlineBanner');
@@ -1243,18 +1102,13 @@ function updateOfflineBanner() {
   } else if (q.length > 0) {
     banner.textContent = `🔄 Syncing ${q.length} offline payment${q.length > 1 ? 's' : ''}…`;
     banner.classList.remove('hidden');
-  } else {
-    banner.classList.add('hidden');
-  }
+  } else banner.classList.add('hidden');
 }
-
 window.addEventListener('online', () => { flushOfflineQueue(); updateOfflineBanner(); });
 window.addEventListener('offline', updateOfflineBanner);
 setInterval(updateOfflineBanner, 5000);
 
-/* ═══════════════════════════════════════
-   WHATSAPP
-═══════════════════════════════════════ */
+/* ===== WhatsApp Reminder ===== */
 function waRemind(sid, bal) {
   const s = students.find(x => x.id === sid);
   if (!s) return;
@@ -1263,9 +1117,7 @@ function waRemind(sid, bal) {
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`);
 }
 
-/* ═══════════════════════════════════════
-   STUDENT DETAIL
-═══════════════════════════════════════ */
+/* ===== Student Detail ===== */
 async function openDetail(sid) {
   await loadStudents();
   currentDetail = students.find(x => x.id === sid);
@@ -1340,9 +1192,7 @@ async function renderDetAttendance() {
   };
 
   let html = '<div class="grid grid-cols-7 gap-1 mb-3">';
-  ['S','M','T','W','T','F','S'].forEach(d => {
-    html += `<div class="text-center text-xs text-slate-400 dark:text-dark-muted py-1">${d}</div>`;
-  });
+  ['S','M','T','W','T','F','S'].forEach(d => html += `<div class="text-center text-xs text-slate-400 dark:text-dark-muted py-1">${d}</div>`);
   for (let d = 1; d <= days; d++) {
     const st = byDay[d];
     html += `<div class="aspect-square rounded-lg flex items-center justify-center text-xs font-medium ${st ? colors[st] : 'bg-slate-100 dark:bg-dark-border text-slate-400 dark:text-dark-muted'}">${d}</div>`;
@@ -1377,10 +1227,8 @@ function waRemindDetail() {
   waRemind(currentDetail.id, Math.max(currentDetail.monthly_fee - getPaid(currentDetail.id), 0));
 }
 
-/* ═══════════════════════════════════════
-   FEE RECEIPT GENERATOR
-═══════════════════════════════════════ */
-function generateReceipt() {
+/* ===== Receipt (native share first, WhatsApp fallback) ===== */
+async function generateReceipt() {
   const s = currentDetail;
   const p = getPaid(s.id);
   const bal = Math.max(s.monthly_fee - p, 0);
@@ -1404,13 +1252,21 @@ function generateReceipt() {
 Generated by FeeBook 📚
 feebook.vercel.app`;
 
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: `Fee Receipt - ${s.name}`, text: receipt });
+      toast('Receipt shared ✓');
+      return;
+    } catch (err) {
+      if (err?.name === 'AbortError') return;
+    }
+  }
+
   const phone = s.parent_phone ? '91' + s.parent_phone : '';
   window.open(`https://wa.me/${phone}?text=${encodeURIComponent(receipt)}`);
 }
 
-/* ═══════════════════════════════════════
-   ATTENDANCE (Free Basic + Pro Full)
-═══════════════════════════════════════ */
+/* ===== Attendance (Free) + Holiday banner ===== */
 async function openAttendance() {
   document.getElementById('attDate').value = new Date().toISOString().slice(0, 10);
   await loadStudents();
@@ -1422,49 +1278,43 @@ async function openAttendance() {
   loadAttendance();
 }
 
-function isHoliday(dateStr) {
-  return INDIAN_HOLIDAYS_2025.includes(dateStr);
-}
-
-function isWorkingDay(dateStr) {
-  const day = new Date(dateStr).getDay();
-  return workingDays.includes(day);
-}
+function isHoliday(dateStr) { return INDIAN_HOLIDAYS_2025.includes(dateStr); }
+function isWorkingDay(dateStr) { return workingDays.includes(new Date(dateStr).getDay()); }
 
 function overrideHoliday() {
   holidayOverride = true;
   document.getElementById('holidayBanner').classList.add('hidden');
-  document.getElementById('attList').style.display = '';
   document.getElementById('saveAttBtn').style.display = '';
+  loadAttendance();
 }
 
 async function loadAttendance() {
   attState = {};
-  holidayOverride = false;
   const batch = document.getElementById('attBatch').value;
   const date = document.getElementById('attDate').value;
   const list = students.filter(s => !batch || s.batch_name === batch);
 
   const holidayBanner = document.getElementById('holidayBanner');
 
-  if (isHoliday(date) && !holidayOverride) {
-    holidayBanner.classList.remove('hidden');
-    document.getElementById('holidayText').textContent =
-      `🎉 ${HOLIDAY_NAMES[date] || 'Holiday today'} — No class scheduled`;
-    document.getElementById('attList').innerHTML = '';
-    document.getElementById('saveAttBtn').style.display = 'none';
-    return;
-  } else if (!isWorkingDay(date) && !holidayOverride) {
-    holidayBanner.classList.remove('hidden');
-    document.getElementById('holidayText').textContent =
-      `📅 This is an off day (not in your working days)`;
-    document.getElementById('attList').innerHTML = '';
-    document.getElementById('saveAttBtn').style.display = 'none';
-    return;
-  } else {
-    holidayBanner.classList.add('hidden');
-    document.getElementById('saveAttBtn').style.display = '';
+  if (!holidayOverride) {
+    if (isHoliday(date)) {
+      holidayBanner.classList.remove('hidden');
+      document.getElementById('holidayText').textContent = `🎉 ${HOLIDAY_NAMES[date] || 'Holiday today'} — No class scheduled`;
+      document.getElementById('attList').innerHTML = '';
+      document.getElementById('saveAttBtn').style.display = 'none';
+      return;
+    }
+    if (!isWorkingDay(date)) {
+      holidayBanner.classList.remove('hidden');
+      document.getElementById('holidayText').textContent = `📅 This is an off day (not in your working days)`;
+      document.getElementById('attList').innerHTML = '';
+      document.getElementById('saveAttBtn').style.display = 'none';
+      return;
+    }
   }
+
+  holidayBanner.classList.add('hidden');
+  document.getElementById('saveAttBtn').style.display = '';
 
   const [todayRes, yesterdayRes] = await Promise.all([
     sb.from('attendance').select('*').eq('teacher_id', user.id).eq('date', date),
@@ -1473,6 +1323,7 @@ async function loadAttendance() {
   ]);
 
   (todayRes.data || []).forEach(a => attState[a.student_id] = a.status);
+
   list.forEach(s => {
     if (!attState[s.id]) {
       const y = (yesterdayRes.data || []).find(a => a.student_id === s.id);
@@ -1500,7 +1351,8 @@ function setAtt(sid, st) {
   attState[sid] = st;
   ['present','absent','late'].forEach(x => {
     const el = document.getElementById(`att-${sid}-${x}`);
-    if (el) el.className = `px-3 py-2 rounded-lg text-xs font-medium btn-press ${st === x
+    if (!el) return;
+    el.className = `px-3 py-2 rounded-lg text-xs font-medium btn-press ${st === x
       ? x === 'present' ? 'bg-green-600 text-white'
         : x === 'absent' ? 'bg-red-500 text-white' : 'bg-yellow-500 text-white'
       : 'bg-slate-100 dark:bg-dark-border text-slate-600 dark:text-dark-muted'}`;
@@ -1511,49 +1363,19 @@ async function saveAttendance() {
   const btn = document.getElementById('saveAttBtn');
   btn.disabled = true; btn.textContent = 'Saving…';
   const date = document.getElementById('attDate').value;
+
   const rows = Object.entries(attState).map(([sid, st]) => ({
     student_id: sid, teacher_id: user.id, date, status: st
   }));
-  if (rows.length) {
-    await sb.from('attendance').upsert(rows, { onConflict: 'student_id,date' });
-  }
+
+  if (rows.length) await sb.from('attendance').upsert(rows, { onConflict: 'student_id,date' });
+
   btn.disabled = false; btn.textContent = 'Save Attendance';
   toast(`Attendance saved for ${rows.length} students ✓`);
   show('appScreen');
 }
 
-/* ═══════════════════════════════════════
-   WORKING DAYS
-═══════════════════════════════════════ */
-function loadWorkingDays() {
-  const saved = localStorage.getItem('fb_working_days');
-  if (saved) workingDays = JSON.parse(saved);
-  updateWorkingDayUI();
-}
-
-function toggleWorkDay(day) {
-  const idx = workingDays.indexOf(day);
-  if (idx > -1) workingDays.splice(idx, 1);
-  else workingDays.push(day);
-  localStorage.setItem('fb_working_days', JSON.stringify(workingDays));
-  updateWorkingDayUI();
-}
-
-function updateWorkingDayUI() {
-  [0,1,2,3,4,5,6].forEach(d => {
-    const btn = document.getElementById('wd' + d);
-    if (!btn) return;
-    if (workingDays.includes(d)) {
-      btn.className = 'flex-1 text-xs py-2 rounded-lg border-2 border-primary-600 bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300 btn-press';
-    } else {
-      btn.className = 'flex-1 text-xs py-2 rounded-lg border-2 border-slate-200 dark:border-dark-border text-slate-500 dark:text-dark-muted btn-press';
-    }
-  });
-}
-
-/* ═══════════════════════════════════════
-   HOMEWORK
-═══════════════════════════════════════ */
+/* ===== Homework (DB save + WA share + native share with file) ===== */
 async function loadHomework() {
   document.getElementById('hwDate').value = new Date().toISOString().slice(0, 10);
   await loadStudents();
@@ -1562,11 +1384,21 @@ async function loadHomework() {
     '<option value="">All Batches</option>' + batches.map(b => `<option>${b}</option>`).join('');
 
   const m = ym(month);
-  const { data } = await sb.from('homework')
-    .select('*').eq('teacher_id', user.id).like('hw_date', m + '%')
-    .order('hw_date', { ascending: false }).limit(10);
+  const res = await sb.from('homework')
+    .select('*')
+    .eq('teacher_id', user.id)
+    .like('hw_date', m + '%')
+    .order('hw_date', { ascending: false })
+    .limit(10);
 
-  document.getElementById('hwList').innerHTML = (data || []).map(h => `
+  if (res.error) {
+    document.getElementById('hwList').innerHTML =
+      `<p class="text-center text-red-600 py-4">Homework load failed: ${res.error.message}</p>`;
+    return;
+  }
+
+  const data = res.data || [];
+  document.getElementById('hwList').innerHTML = data.map(h => `
     <div class="bg-white dark:bg-dark-card rounded-xl p-3 mb-2 border border-slate-100 dark:border-dark-border">
       <div class="flex justify-between items-start mb-1">
         <span class="text-xs font-bold text-purple-600 dark:text-purple-400">${h.hw_date} · ${h.batch_name || 'All'}</span>
@@ -1604,51 +1436,12 @@ async function saveHomework() {
 
   if (error) return toast('Save failed: ' + error.message, 'bg-red-600');
 
-  ['hwText','hwSubject','hwTopic','hwLink'].forEach(id => {
-    document.getElementById(id).value = '';
-  });
-
+  ['hwText','hwSubject','hwTopic','hwLink'].forEach(id => document.getElementById(id).value = '');
   toast('Homework saved ✓');
   loadHomework();
 }
 
-async function shareHwEntry(hwId) {
-  const { data } = await sb.from('homework').select('*').eq('id', hwId).single();
-  if (!data) return;
-  const msg = buildHomeworkMessage(data);
-  const batch = data.batch_name;
-  const batchStudents = students.filter(s => !batch || s.batch_name === batch);
-
-  if (batchStudents.length === 0) {
-    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
-    return;
-  }
-
-  if (batchStudents.length === 1) {
-    const phone = '91' + batchStudents[0].parent_phone;
-    window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`);
-    return;
-  }
-
-  // Multiple students — broadcast option
-  const choice = confirm(`Share to all ${batchStudents.length} parents individually?\nOK = Yes, all parents\nCancel = Open generic link`);
-  if (choice) {
-    let i = 0;
-    const sendNext = () => {
-      if (i >= batchStudents.length) { toast('All messages opened!'); return; }
-      const s = batchStudents[i++];
-      const phone = '91' + s.parent_phone;
-      window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`);
-      setTimeout(sendNext, 1500);
-    };
-    sendNext();
-  } else {
-    window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
-  }
-}
-
 function buildHomeworkMessage(hw) {
-  const monthName = new Date(hw.hw_date).toLocaleString('en-IN', { month: 'long', year: 'numeric' });
   let msg = `📝 *Homework — ${hw.hw_date}*\n`;
   if (hw.batch_name) msg += `*Batch:* ${hw.batch_name}\n`;
   if (hw.subject) msg += `*Subject:* ${hw.subject}\n`;
@@ -1674,9 +1467,55 @@ function shareHomeworkWA() {
   window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
 }
 
-/* ═══════════════════════════════════════
-   EXPENSES
-═══════════════════════════════════════ */
+async function shareHomeworkWithFile() {
+  const hwText = clean(document.getElementById('hwText').value);
+  const date = document.getElementById('hwDate').value;
+  const batch = document.getElementById('hwBatch').value;
+  const subject = clean(document.getElementById('hwSubject').value);
+  const topic = clean(document.getElementById('hwTopic').value);
+  const link = document.getElementById('hwLink').value.trim();
+
+  if (!hwText) return toast('Enter homework first', 'bg-red-600');
+
+  const hw = { hw_date: date, batch_name: batch, subject, homework_text: hwText, topic_covered: topic, resource_link: link };
+  const msg = buildHomeworkMessage(hw);
+
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/*,application/pdf';
+  fileInput.multiple = false;
+
+  fileInput.onchange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          title: `Homework - ${date || ''}`.trim(),
+          text: msg,
+          files: [file]
+        });
+        toast('Shared successfully ✓');
+      } catch (err) {
+        if (err?.name !== 'AbortError') toast('Share failed — try "Text Only"', 'bg-red-600');
+      }
+    } else {
+      toast('Your browser doesn’t support file sharing. Use "Text Only".', 'bg-yellow-600');
+    }
+  };
+
+  fileInput.click();
+}
+
+async function shareHwEntry(hwId) {
+  const { data } = await sb.from('homework').select('*').eq('id', hwId).single();
+  if (!data) return;
+  const msg = buildHomeworkMessage(data);
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+}
+
+/* ===== Expenses ===== */
 async function addExpense() {
   const desc = clean(document.getElementById('expDesc').value);
   const amt = parseFloat(document.getElementById('expAmount').value);
@@ -1684,10 +1523,13 @@ async function addExpense() {
   if (!amt || amt < 1) return toast('Enter a valid amount', 'bg-red-600');
 
   await sb.from('expenses').insert({
-    teacher_id: user.id, description: desc, amount: amt,
+    teacher_id: user.id,
+    description: desc,
+    amount: amt,
     category: document.getElementById('expCat').value,
     expense_date: new Date().toISOString().slice(0, 10)
   });
+
   document.getElementById('expDesc').value = '';
   document.getElementById('expAmount').value = '';
   loadExpenses();
@@ -1697,45 +1539,32 @@ async function loadExpenses() {
   const m = ym(month);
   const { data: expData } = await sb.from('expenses').select('*')
     .eq('teacher_id', user.id).like('expense_date', m + '%');
+
   const total = (expData || []).reduce((t, e) => t + parseFloat(e.amount), 0);
   const income = payments.reduce((t, p) => t + parseFloat(p.amount), 0);
 
   document.getElementById('profitCard').innerHTML = `
     <div class="flex justify-between text-sm">
-      <div class="text-center">
-        <p class="text-slate-500 dark:text-dark-muted text-xs">Income</p>
-        <p class="font-bold text-green-600 text-base">₹${income.toLocaleString('en-IN')}</p>
-      </div>
-      <div class="text-center">
-        <p class="text-slate-500 dark:text-dark-muted text-xs">Expenses</p>
-        <p class="font-bold text-red-600 text-base">₹${total.toLocaleString('en-IN')}</p>
-      </div>
-      <div class="text-center">
-        <p class="text-slate-500 dark:text-dark-muted text-xs">Profit</p>
-        <p class="font-bold text-primary-600 dark:text-primary-400 text-base">₹${(income - total).toLocaleString('en-IN')}</p>
-      </div>
+      <div class="text-center"><p class="text-slate-500 dark:text-dark-muted text-xs">Income</p><p class="font-bold text-green-600 text-base">₹${income.toLocaleString('en-IN')}</p></div>
+      <div class="text-center"><p class="text-slate-500 dark:text-dark-muted text-xs">Expenses</p><p class="font-bold text-red-600 text-base">₹${total.toLocaleString('en-IN')}</p></div>
+      <div class="text-center"><p class="text-slate-500 dark:text-dark-muted text-xs">Profit</p><p class="font-bold text-primary-600 dark:text-primary-400 text-base">₹${(income - total).toLocaleString('en-IN')}</p></div>
     </div>`;
 
   document.getElementById('expList').innerHTML = (expData || [])
     .sort((a, b) => b.expense_date.localeCompare(a.expense_date))
     .map(e => `
       <div class="flex justify-between bg-white dark:bg-dark-card rounded-xl p-3 mb-2 border border-slate-100 dark:border-dark-border text-sm">
-        <div>
-          <p class="font-medium text-slate-800 dark:text-dark-text">${e.description}</p>
-          <p class="text-xs text-slate-400 dark:text-dark-muted">${e.category} · ${e.expense_date}</p>
-        </div>
+        <div><p class="font-medium text-slate-800 dark:text-dark-text">${e.description}</p>
+          <p class="text-xs text-slate-400 dark:text-dark-muted">${e.category} · ${e.expense_date}</p></div>
         <span class="font-bold text-slate-800 dark:text-dark-text">₹${e.amount}</span>
-      </div>`).join('') ||
-    '<p class="text-center text-slate-400 dark:text-dark-muted py-4">No expenses this month</p>';
+      </div>`).join('') || '<p class="text-center text-slate-400 dark:text-dark-muted py-4">No expenses this month</p>';
 }
 
-/* ═══════════════════════════════════════
-   REPORTS
-═══════════════════════════════════════ */
+/* ===== Reports ===== */
 async function renderReports() {
   await loadDashboardData();
-  document.getElementById('repMonth').textContent =
-    month.toLocaleString('en-IN', { month: 'long', year: 'numeric' });
+  document.getElementById('repMonth').textContent = month.toLocaleString('en-IN', { month: 'long', year: 'numeric' });
+
   const income = payments.reduce((t, p) => t + parseFloat(p.amount), 0);
   const fp = students.filter(s => getPaid(s.id) >= s.monthly_fee).length;
   const pp = students.filter(s => { const p = getPaid(s.id); return p > 0 && p < s.monthly_fee; }).length;
@@ -1772,22 +1601,23 @@ async function renderReports() {
 
 async function exportReport() {
   if (!window.proCached) return toast('Export is a Pro feature — Settings → Go Pro', 'bg-slate-700');
+
   const income = payments.reduce((t, p) => t + parseFloat(p.amount), 0);
   const fp = students.filter(s => getPaid(s.id) >= s.monthly_fee).length;
   const pp = students.filter(s => { const p = getPaid(s.id); return p > 0 && p < s.monthly_fee; }).length;
+
   const msg = `📊 *FeeBook Monthly Report*\nMonth: ${month.toLocaleString('en-IN', { month: 'long', year: 'numeric' })}\nTeacher: ${profile.name}\n\nTotal Students: ${students.length}\n✅ Fully Paid: ${fp}\n🟡 Partial: ${pp}\n❌ Pending: ${students.length - fp - pp}\n\n💰 Total Collected: ₹${income.toLocaleString('en-IN')}\n📈 Collection Rate: ${students.length ? Math.round(fp / students.length * 100) : 0}%\n\nGenerated by FeeBook 📚\nfeebook.vercel.app`;
   window.open('https://wa.me/?text=' + encodeURIComponent(msg));
 }
 
-/* ═══════════════════════════════════════
-   SETTINGS
-═══════════════════════════════════════ */
+/* ===== Settings (payment code + referral) ===== */
 async function renderSettings() {
   if (!user) return;
 
   const { data: subs } = await sb.from('subscriptions')
     .select('*').eq('teacher_id', user.id)
     .order('expiry_date', { ascending: false }).limit(1);
+
   const active = subs?.[0] && new Date(subs[0].expiry_date) >= new Date();
   const days = active ? Math.ceil((new Date(subs[0].expiry_date) - new Date()) / 864e5) : 0;
 
@@ -1810,6 +1640,7 @@ async function renderSettings() {
          ⭐ Pro: Unlimited everything + export + history
        </div>`;
 
+  // payment code
   let { data: codes } = await sb.from('payment_codes')
     .select('*').eq('teacher_id', user.id).eq('status', 'pending')
     .order('created_at', { ascending: false }).limit(1);
@@ -1821,12 +1652,14 @@ async function renderSettings() {
   }
   document.getElementById('myCode').textContent = codes[0].code;
 
+  // account card
   document.getElementById('accountCard').innerHTML = `
     <p class="font-semibold mb-2 dark:text-dark-text">Account</p>
     <p class="text-sm text-slate-600 dark:text-dark-muted">${profile.name}</p>
     <p class="text-sm text-slate-500 dark:text-dark-muted">+91 ${profile.phone || 'Not set'}</p>
     <p class="text-sm text-slate-500 dark:text-dark-muted">${user.email || 'Google Login'}</p>`;
 
+  // referral
   const ref = 'FB' + user.id.slice(0, 6).toUpperCase();
   const refMsg = encodeURIComponent(`Try FeeBook — best free fee tracker for tuition teachers. Use my referral code *${ref}* to get 7 days Pro free! feebook.vercel.app 📚`);
   document.getElementById('referralCard').innerHTML = `
@@ -1845,7 +1678,7 @@ function copyCode() {
   navigator.clipboard.writeText(code).then(() => {
     toast('Code copied ✓ — paste it in your email to request Pro');
   }).catch(() => {
-    toast('Code: ' + code + ' (copy manually)', 'bg-slate-700');
+    toast('Copy failed — code: ' + code, 'bg-slate-700');
   });
 }
 
@@ -1853,31 +1686,24 @@ async function activateManual() {
   const code = clean(document.getElementById('manualCode').value).toUpperCase();
   if (!code) return toast('Enter your activation code', 'bg-red-600');
   const { data } = await sb.rpc('activate_with_code', { p_code: code });
+
   if (data === 'ok') {
     toast('🎉 Pro Activated for 30 days!');
     document.getElementById('manualCode').value = '';
     cacheInvalidate(`pro_${user.id}`);
     await refreshPro();
     renderSettings();
-  } else if (data === 'used') {
-    toast('This code was already used', 'bg-red-600');
-  } else if (data === 'not_yours') {
-    toast('That code belongs to a different account', 'bg-red-600');
-  } else {
-    toast('Invalid code — check again or WhatsApp support', 'bg-red-600');
-  }
+  } else if (data === 'used') toast('This code was already used', 'bg-red-600');
+  else if (data === 'not_yours') toast('That code belongs to a different account', 'bg-red-600');
+  else toast('Invalid code — check again or WhatsApp support', 'bg-red-600');
 }
 
-/* ═══════════════════════════════════════
-   SERVICE WORKER
-═══════════════════════════════════════ */
+/* ===== Service Worker ===== */
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('/sw.js').catch(() => {});
 }
 
-/* ═══════════════════════════════════════
-   START
-═══════════════════════════════════════ */
+/* ===== START ===== */
 initApp();
 </script>
 </body>
