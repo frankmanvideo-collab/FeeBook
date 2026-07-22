@@ -1,0 +1,1861 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <!-- Instant Dark Mode Initialization (Prevents white flash of death on load) -->
+  <script>
+    try {
+      const saved = localStorage.getItem('fb_darkmode');
+      const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const isDark = saved !== null ? saved === 'true' : prefersDark;
+      document.documentElement.classList.toggle('dark', isDark);
+    } catch (e) {}
+  </script>
+  <meta name="google-site-verification" content="sa8vjiunLitjSgo_E3Jw5T-piSi0TEsQGUK4jBMpXTc" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FeeBook — Free Fee Tracker for Indian Tuition Teachers</title>
+<meta name="description" content="India's simplest fee tracker for tuition teachers. Track partial cash fees, manage students, homework, attendance. No embarrassing auto-reminders. Free for 25 students. Built for Indian tuition teachers.">
+<meta name="keywords" content="tuition fee tracker, partial fee tracking, coaching class fees, home tuition app, fee management India, homework tracker, attendance tracker, tuition teacher app">
+<meta name="author" content="FeeBook">
+<meta name="geo.region" content="IN">
+<meta name="geo.placename" content="India">
+<meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
+<link rel="canonical" href="https://feebook.vercel.app">
+<meta property="og:title" content="FeeBook — India's Best Free Fee Tracker for Tuition Teachers">
+<meta property="og:description" content="Track who paid, who partially paid, who hasn't paid. Homework, attendance, expenses. No auto-reminders. Free to start.">
+<meta property="og:url" content="https://feebook.vercel.app">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://feebook.vercel.app/icon-512.png">
+<meta property="og:image:width" content="512">
+<meta property="og:image:height" content="512">
+<meta property="og:image:alt" content="FeeBook Logo">
+<meta property="og:site_name" content="FeeBook">
+<meta property="og:locale" content="en_IN">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="FeeBook — Free Fee Tracker for Tuition Teachers">
+<meta name="twitter:description" content="Track partial cash fees, homework, attendance. Built by an 11th grader for Indian teachers.">
+<meta name="twitter:image" content="https://feebook.vercel.app/icon-512.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/icon-512.png">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<link rel="shortcut icon" href="/icon-192.png">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#2563EB" id="themeColor">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="FeeBook">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "FeeBook",
+  "description": "India's simplest free fee tracker for tuition teachers. Track partial cash payments, homework, attendance, expenses. No embarrassing auto-reminders.",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web, Android, iOS",
+  "offers": [
+    { "@type": "Offer", "price": "0", "priceCurrency": "INR", "description": "Free plan up to 25 students" },
+    { "@type": "Offer", "price": "99", "priceCurrency": "INR", "description": "Pro plan unlimited students" }
+  ],
+  "url": "https://feebook.vercel.app",
+  "image": "https://feebook.vercel.app/icon-512.png",
+  "creator": { "@type": "Person", "name": "FeeBook Developer", "description": "Built by an 11th grade student in India" },
+  "featureList": "Partial fee tracking, Homework management, Attendance tracking, WhatsApp reminders, Fee receipts, Expense tracking",
+  "keywords": "tuition fee tracker, coaching fee management, partial payment tracking India, homework tracker, attendance app"
+}
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          primary: { 50:'#eff6ff',100:'#dbeafe',200:'#bfdbfe',300:'#93c5fd',400:'#60a5fa',500:'#3b82f6',600:'#2563eb',700:'#1d4ed8',800:'#1e40af',900:'#1e3a8a' },
+          dark: { bg:'#0f172a',card:'#1e293b',border:'#334155',text:'#e2e8f0',muted:'#94a3b8' }
+        }
+      }
+    }
+  }
+</script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  .screen-transition { animation: fadeIn 0.2s ease-out; }
+  @keyframes fadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+  .btn-press { transition: transform 0.1s; }
+  .btn-press:active { transform: scale(0.97); }
+  .skeleton { background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+  @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+  .dark .skeleton { background: linear-gradient(90deg, #1e293b 25%, #334155 50%, #1e293b 75%); background-size: 200% 100%; }
+  .pwa-prompt { animation: slideUp 0.3s ease-out; }
+  @keyframes slideUp { from { transform: translateY(100%); opacity:0; } to { transform: translateY(0); opacity:1; } }
+</style>
+</head>
+<body class="bg-[#F8FAFC] dark:bg-dark-bg min-h-screen transition-colors duration-300">
+
+<!-- TOAST -->
+<div id="toast" class="hidden fixed top-4 left-1/2 -translate-x-1/2 bg-green-600 text-white px-5 py-3 rounded-xl shadow-lg z-50 max-w-sm text-sm text-center"></div>
+
+<!-- OFFLINE BANNER -->
+<div id="offlineBanner" class="hidden fixed top-0 w-full bg-yellow-500 text-white text-center text-sm py-2 z-50">📴 You are offline — data will sync when online</div>
+
+<!-- PWA INSTALL PROMPT -->
+<div id="pwaPrompt" class="hidden fixed bottom-20 left-4 right-4 max-w-md mx-auto bg-white dark:bg-dark-card rounded-2xl shadow-2xl p-5 z-50 pwa-prompt border border-slate-200 dark:border-dark-border">
+  <div class="flex items-start gap-3">
+    <img src="/icon-192.png" alt="FeeBook" class="w-12 h-12 rounded-xl">
+    <div class="flex-1">
+      <p class="font-bold text-slate-800 dark:text-dark-text">Install FeeBook</p>
+      <p class="text-sm text-slate-500 dark:text-dark-muted mt-1">Add to home screen for quick access — works offline too!</p>
+    </div>
+    <button onclick="closePwa()" class="text-slate-400 text-xl">✕</button>
+  </div>
+  <div class="flex gap-2 mt-4">
+    <button onclick="installPwa()" class="flex-1 bg-primary-600 text-white rounded-xl py-3 font-semibold btn-press">Install App</button>
+    <button onclick="closePwa()" class="flex-1 bg-slate-100 dark:bg-dark-border text-slate-600 dark:text-dark-muted rounded-xl py-3 font-medium btn-press">Later</button>
+  </div>
+</div>
+
+<!-- LOADING SCREEN -->
+<div id="loadingScreen" class="fixed inset-0 bg-primary-600 flex flex-col items-center justify-center z-50">
+  <img src="/icon-192.png" alt="FeeBook" class="w-24 h-24 mb-4 rounded-2xl shadow-2xl">
+  <h1 class="text-3xl font-bold text-white">FeeBook</h1>
+  <p class="text-blue-200 mt-2">Loading...</p>
+  <div class="mt-6 w-48 h-1 bg-blue-400/30 rounded-full overflow-hidden">
+    <div class="h-full bg-white rounded-full" style="animation: loading 1.5s ease-in-out infinite; width:40%"></div>
+  </div>
+  <style>@keyframes loading { 0%{transform:translateX(-100%)} 100%{transform:translateX(350%)} }</style>
+</div>
+
+<!-- DESKTOP NAVBAR (PERSISTENT ON TOP FOR DESKTOP SCREENS) -->
+<div id="desktopNav" class="hidden md:flex justify-between items-center bg-white dark:bg-dark-card border-b border-slate-200 dark:border-dark-border px-8 py-3 sticky top-0 z-50 shadow-sm max-w-5xl mx-auto rounded-b-2xl mt-2">
+  <div class="flex items-center gap-3">
+    <!-- SVG Blue Logo Badge -->
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" class="w-8 h-8">
+      <rect width="512" height="512" fill="#FFFFFF" />
+      <rect x="146" y="116" width="220" height="280" rx="24" fill="#2563EB" />
+      <path d="M 146,140 A 24,24 0 0,1 170,116 L 186,116 L 186,396 L 170,396 A 24,24 0 0,1 146,372 Z" fill="#1D4ED8" />
+      <circle cx="356" cy="386" r="40" fill="#FFFFFF" stroke="#16A34A" stroke-width="6" />
+      <path d="M 345,386 L 353,395 L 367,377" fill="none" stroke="#16A34A" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+    <span class="text-lg font-bold tracking-tight text-slate-900 dark:text-dark-text">FeeBook</span>
+  </div>
+  
+  <!-- Navigation Tabs -->
+  <div class="flex gap-1">
+    <button onclick="show('appScreen')" class="px-4 py-2 rounded-xl text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 text-primary-600 dark:text-primary-400 transition-colors btn-press">🏠 Home</button>
+    <button onclick="show('studentsScreen')" class="px-4 py-2 rounded-xl text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-dark-muted transition-colors btn-press">👥 Students</button>
+    <button onclick="show('reportsScreen'); renderReports()" class="px-4 py-2 rounded-xl text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-dark-muted transition-colors btn-press">📊 Reports</button>
+    <button onclick="show('settingsScreen'); renderSettings()" class="px-4 py-2 rounded-xl text-sm font-semibold hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-600 dark:text-dark-muted transition-colors btn-press">⚙️ Settings</button>
+  </div>
+
+  <!-- Right side Actions (Theme toggle and logout) -->
+  <div class="flex items-center gap-3">
+    <span id="desktopProBadge" class="text-[10px] bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300 px-2.5 py-1 rounded-full font-bold uppercase tracking-wider">FREE</span>
+    <button onclick="toggleDarkMode()" class="text-base bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 rounded-full w-8 h-8 flex items-center justify-center btn-press">🌙</button>
+    <button onclick="doLogout()" class="bg-red-50 hover:bg-red-100 text-red-600 dark:bg-red-950/20 dark:hover:bg-red-950/40 text-xs font-bold px-4 py-2 rounded-xl btn-press transition-colors">Logout</button>
+  </div>
+</div>
+
+<!-- ══════════ AUTH ══════════ -->
+<div id="authScreen" class="hidden max-w-md mx-auto p-6 pt-10 screen-transition">
+  <div class="bg-white dark:bg-dark-card p-6 rounded-2xl shadow-sm border border-slate-100 dark:border-dark-border">
+    <div class="text-center mb-8">
+      <img src="/icon-192.png" alt="FeeBook" class="w-20 h-20 mx-auto mb-3 rounded-2xl shadow-lg">
+      <h1 class="text-3xl font-bold text-primary-600 dark:text-primary-400">FeeBook</h1>
+      <p class="text-slate-500 dark:text-dark-muted mt-1">India's simplest fee tracker for tuition teachers</p>
+    </div>
+
+    <button onclick="doGoogleLogin()"
+      class="w-full bg-white dark:bg-dark-card border-2 border-slate-200 dark:border-dark-border rounded-xl py-4 font-semibold text-base flex items-center justify-center gap-3 mb-4 btn-press hover:bg-slate-50 dark:hover:bg-slate-700 text-slate-700 dark:text-dark-text"
+      style="min-height:52px">
+      <svg width="20" height="20" viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+      Continue with Google
+    </button>
+
+    <div class="flex items-center gap-3 mb-4">
+      <div class="flex-1 h-px bg-slate-200 dark:bg-dark-border"></div>
+      <span class="text-xs text-slate-400 dark:text-dark-muted">OR</span>
+      <div class="flex-1 h-px bg-slate-200 dark:bg-dark-border"></div>
+    </div>
+
+    <div id="loginForm">
+      <input id="loginEmail" type="email" placeholder="Email" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+      <input id="loginPassword" type="password" placeholder="Password" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+      <button onclick="doLogin()" class="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors" style="min-height:52px">Login</button>
+      <div class="flex justify-between mt-3">
+        <button onclick="showForgotPassword()" class="text-sm text-primary-600 dark:text-primary-400 font-medium">Forgot Password?</button>
+        <span onclick="toggleAuth()" class="text-sm text-primary-600 dark:text-primary-400 font-semibold cursor-pointer">Register free →</span>
+      </div>
+    </div>
+
+    <div id="registerForm" class="hidden">
+      <input id="regName" placeholder="Your Name" maxlength="50" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+      <input id="regPhone" type="tel" placeholder="Phone Number (10 digits)" maxlength="10" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+      <input id="regEmail" type="email" placeholder="Email" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+      <input id="regPassword" type="password" placeholder="Password (6+ characters)" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+      <input id="regReferral" placeholder="Referral Code (optional)" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+      <button onclick="doRegister()" class="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors" style="min-height:52px">Create Account</button>
+      <p class="text-center mt-4 text-sm text-slate-500 dark:text-dark-muted">Already registered? <span onclick="toggleAuth()" class="text-primary-600 dark:text-primary-400 font-semibold cursor-pointer">Login</span></p>
+    </div>
+
+    <div id="forgotForm" class="hidden">
+      <p class="text-sm text-slate-600 dark:text-dark-muted mb-3">Enter your email address. We'll send a password reset link.</p>
+      <input id="forgotEmail" type="email" placeholder="Your registered email" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+      <button onclick="doForgotPassword()" class="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors" style="min-height:52px">Send Reset Link</button>
+      <p class="text-center mt-4 text-sm text-slate-500 dark:text-dark-muted">Remember your password? <span onclick="showLoginForm()" class="text-primary-600 dark:text-primary-400 font-semibold cursor-pointer">Login</span></p>
+    </div>
+
+    <p id="authError" class="text-red-600 text-sm mt-3 text-center min-h-[20px]"></p>
+  </div>
+</div>
+
+<!-- ══════════ DASHBOARD ══════════ -->
+<div id="appScreen" class="hidden w-full max-w-md md:max-w-6xl lg:max-w-7xl mx-auto px-4 md:px-8 pb-24 screen-transition">
+  
+  <!-- Responsive Grid Container -->
+  <div class="grid grid-cols-1 md:grid-cols-12 gap-6 items-start">
+    
+    <!-- LEFT PANEL (STATS & QUICK ACTIONS) -->
+    <div class="md:col-span-5 bg-white dark:bg-dark-card md:rounded-2xl md:shadow-sm md:border md:border-slate-100 md:dark:border-dark-border overflow-hidden pb-1 md:pb-5">
+      
+      <!-- Branded Header -->
+      <div class="bg-primary-600 dark:bg-primary-900 text-white p-5 rounded-b-2xl md:rounded-b-none">
+        <div class="flex justify-between items-center md:hidden">
+          <div class="flex items-center gap-2">
+            <img src="/icon-192.png" alt="FeeBook" class="w-8 h-8 rounded-lg">
+            <h1 class="text-xl font-bold">FeeBook</h1>
+          </div>
+          <div class="flex items-center gap-2">
+            <button onclick="toggleDarkMode()" class="text-lg bg-white/10 rounded-full w-8 h-8 flex items-center justify-center" id="darkToggle">🌙</button>
+            <span id="proBadge" class="text-xs bg-white/20 px-3 py-1 rounded-full font-medium">FREE</span>
+          </div>
+        </div>
+        <p id="teacherName" class="text-blue-100 text-sm mt-1"></p>
+      </div>
+
+      <!-- Subscription Expiry Banner -->
+      <div id="expiryBanner" class="hidden mx-4 mt-3 rounded-xl p-3 text-sm font-medium"></div>
+
+      <!-- Month Navigation -->
+      <div class="flex items-center justify-between px-4 mt-4">
+        <button onclick="changeMonth(-1)" class="text-primary-600 dark:text-primary-400 text-3xl px-3 py-1 btn-press">‹</button>
+        <p id="monthLabel" class="font-bold text-slate-700 dark:text-dark-text"></p>
+        <button onclick="changeMonth(1)" class="text-primary-600 dark:text-primary-400 text-3xl px-3 py-1 btn-press">›</button>
+      </div>
+
+      <!-- Financial/Student Stats Grid -->
+      <div class="grid grid-cols-3 gap-2 p-4">
+        <div class="bg-white dark:bg-dark-card md:bg-slate-50 md:dark:bg-dark-bg rounded-xl p-3 text-center shadow-sm md:shadow-none border border-slate-100 dark:border-dark-border md:border-none">
+          <p class="text-xs text-slate-500 dark:text-dark-muted">Students</p>
+          <p id="totalStudents" class="text-xl font-bold text-primary-600 dark:text-primary-400">0</p>
+        </div>
+        <div class="bg-white dark:bg-dark-card md:bg-slate-50 md:dark:bg-dark-bg rounded-xl p-3 text-center shadow-sm md:shadow-none border border-slate-100 dark:border-dark-border md:border-none">
+          <p class="text-xs text-slate-500 dark:text-dark-muted">Collected</p>
+          <p id="totalCollected" class="text-xl font-bold text-green-600">₹0</p>
+        </div>
+        <div class="bg-white dark:bg-dark-card md:bg-slate-50 md:dark:bg-dark-bg rounded-xl p-3 text-center shadow-sm md:shadow-none border border-slate-100 dark:border-dark-border md:border-none">
+          <p class="text-xs text-slate-500 dark:text-dark-muted">Pending</p>
+          <p id="totalPending" class="text-xl font-bold text-red-600">₹0</p>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="px-4 grid grid-cols-2 gap-2 mb-2 md:grid-cols-4 md:gap-2 md:px-4">
+        <button onclick="show('addStudentScreen')" class="bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-3 text-xs font-semibold btn-press transition-colors md:col-span-2" style="min-height:48px">+ Student</button>
+        <button onclick="openAttendance()" class="bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 text-xs font-semibold btn-press transition-colors md:col-span-2" style="min-height:48px">✓ Attend</button>
+      </div>
+      <div class="px-4 grid grid-cols-2 gap-2 mb-2 md:grid-cols-4 md:gap-2 md:px-4">
+        <button onclick="show('homeworkScreen'); loadHomework()" class="bg-purple-600 hover:bg-purple-700 text-white rounded-xl py-3 text-xs font-semibold btn-press transition-colors md:col-span-2" style="min-height:48px">📝 HW</button>
+        <button onclick="show('expensesScreen'); loadExpenses()" class="bg-slate-700 hover:bg-slate-800 text-white rounded-xl py-3 text-xs font-semibold btn-press transition-colors md:col-span-2" style="min-height:48px">₹ Expense</button>
+      </div>
+
+    </div>
+
+    <!-- RIGHT PANEL (ACTIVE STUDENTS LEDGER) -->
+    <div class="md:col-span-7 bg-white dark:bg-dark-card md:p-6 md:rounded-2xl md:shadow-sm md:border md:border-slate-100 md:dark:border-dark-border">
+      <h2 class="hidden md:block text-xl font-bold text-slate-800 dark:text-dark-text mb-4">Students Ledger</h2>
+      <div id="studentList" class="px-0 pb-2"></div>
+    </div>
+
+  </div>
+</div>
+<!-- ══════════ STUDENTS LIST ══════════ -->
+<div id="studentsScreen" class="hidden w-full max-w-md md:max-w-4xl mx-auto px-4 md:px-8 pb-24 screen-transition">
+  <h2 class="text-xl font-bold mb-3 dark:text-dark-text">Students</h2>
+  <input id="studentSearch" oninput="filterStudents()" placeholder="Search by name…" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+  <div id="allStudents"></div>
+</div>
+
+<!-- ══════════ ADD STUDENT ══════════ -->
+<div id="addStudentScreen" class="hidden w-full max-w-md md:max-w-3xl mx-auto px-4 md:px-8 pb-24 screen-transition">
+  <button onclick="show('appScreen')" class="text-primary-600 dark:text-primary-400 mb-4 text-base btn-press">← Back</button>
+  <h2 class="text-xl font-bold mb-4 dark:text-dark-text">Add New Student</h2>
+  <input id="stuName" placeholder="Student Name *" maxlength="50" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+  <input id="stuParentPhone" type="tel" placeholder="Parent Phone * (10 digits)" maxlength="10" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+  <input id="stuStudentPhone" type="tel" placeholder="Student Phone (optional)" maxlength="10" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base focus:border-primary-500 outline-none">
+  <div class="relative mb-3"><span class="absolute left-4 top-4 text-slate-500 dark:text-dark-muted text-base">₹</span><input id="stuFee" type="number" placeholder="Monthly Fee *" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 pl-8 text-base focus:border-primary-500 outline-none"></div>
+  <input id="stuBatch" placeholder="Batch name (e.g. Morning, Class 10)" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-4 text-base focus:border-primary-500 outline-none">
+  <button onclick="addStudent()" id="addStuBtn" class="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors" style="min-height:52px">Save Student</button>
+</div>
+
+<!-- ══════════ LOG PAYMENT ══════════ -->
+<div id="logPaymentScreen" class="hidden w-full max-w-md md:max-w-3xl mx-auto px-4 md:px-8 pb-24 screen-transition">
+  <button onclick="show('appScreen')" class="text-primary-600 dark:text-primary-400 mb-4 text-base btn-press">← Back</button>
+  <h2 class="text-xl font-bold mb-1 dark:text-dark-text">Log Payment</h2>
+  <p id="payStudentInfo" class="text-sm text-slate-500 dark:text-dark-muted mb-4"></p>
+  <input type="hidden" id="payStudentId">
+  <div class="relative mb-3"><span class="absolute left-4 top-4 text-slate-500">₹</span><input id="payAmount" type="number" placeholder="Amount Received" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 pl-8 text-base focus:border-primary-500 outline-none"></div>
+  <div class="flex gap-2 mb-3">
+    <button onclick="selectMode('Cash')" id="modeCash" class="flex-1 border-2 border-slate-200 dark:border-dark-border rounded-xl py-3 font-medium text-sm btn-press dark:text-dark-text" style="min-height:48px">💵 Cash</button>
+    <button onclick="selectMode('UPI')" id="modeUPI" class="flex-1 border-2 border-slate-200 dark:border-dark-border rounded-xl py-3 font-medium text-sm btn-press dark:text-dark-text" style="min-height:48px">📱 UPI</button>
+    <button onclick="selectMode('Bank')" id="modeBank" class="flex-1 border-2 border-slate-200 dark:border-dark-border rounded-xl py-3 font-medium text-sm btn-press dark:text-dark-text" style="min-height:48px">🏦 Bank</button>
+  </div>
+  <textarea id="payNote" maxlength="200" placeholder="Note (optional)" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base h-20 focus:border-primary-500 outline-none"></textarea>
+  <input id="payDate" type="date" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-4 text-base focus:border-primary-500 outline-none">
+  <button onclick="savePayment()" id="savePayBtn" class="w-full bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors" style="min-height:52px">Save Payment</button>
+</div>
+
+<!-- ══════════ STUDENT DETAIL ══════════ -->
+<div id="studentDetailScreen" class="hidden w-full max-w-md md:max-w-4xl mx-auto px-4 md:px-8 pb-24 screen-transition">
+  <button onclick="show('appScreen')" class="text-primary-600 dark:text-primary-400 mb-3 text-base btn-press">← Back</button>
+  <div class="flex justify-between items-center mb-3">
+    <h2 id="detName" class="text-2xl font-bold text-slate-800 dark:text-dark-text"></h2>
+    <span id="detBatch" class="text-xs bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 px-3 py-1 rounded-full"></span>
+  </div>
+  <div class="flex gap-2 mb-4">
+    <a id="detCall" href="#" class="flex-1 text-center bg-green-600 text-white rounded-xl py-3 font-medium text-sm btn-press" style="min-height:44px; line-height:20px; padding-top:12px">📞 Call</a>
+    <button onclick="waRemindDetail()" class="flex-1 bg-green-500 text-white rounded-xl py-3 font-medium text-sm btn-press" style="min-height:44px">💬 Remind</button>
+    <button onclick="generateReceipt()" class="flex-1 bg-purple-600 text-white rounded-xl py-3 font-medium text-sm btn-press" style="min-height:44px">🧾 Receipt</button>
+    <button onclick="deleteStudent()" class="flex-1 bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400 rounded-xl py-3 font-medium text-sm btn-press" style="min-height:44px">Remove</button>
+  </div>
+  <div id="detSummary" class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4"></div>
+  <div class="flex border-b border-slate-200 dark:border-dark-border mb-4">
+    <button onclick="detTab('payments')" id="tabPayments" class="flex-1 py-3 font-semibold text-primary-600 border-b-2 border-primary-600 text-sm">Payments</button>
+    <button onclick="detTab('attendance')" id="tabAttendance" class="flex-1 py-3 text-slate-500 dark:text-dark-muted text-sm">Attendance</button>
+    <button onclick="detTab('notes')" id="tabNotes" class="flex-1 py-3 text-slate-500 dark:text-dark-muted text-sm">Notes</button>
+  </div>
+  <div id="detPayments"></div>
+  <div id="detAttendance" class="hidden"></div>
+  <div id="detNotes" class="hidden">
+    <textarea id="stuNotes" maxlength="500" placeholder="Private notes — e.g. Struggling with trigonometry" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 h-36 text-base focus:border-primary-500 outline-none" oninput="saveNotes()"></textarea>
+    <p class="text-xs text-slate-400 dark:text-dark-muted mt-1">Auto-saves as you type</p>
+  </div>
+</div>
+
+<!-- ══════════ HOMEWORK ══════════ -->
+<div id="homeworkScreen" class="hidden w-full max-w-md md:max-w-4xl mx-auto px-4 md:px-8 pb-24 screen-transition">
+  <button onclick="show('appScreen')" class="text-primary-600 dark:text-primary-400 mb-3 text-base btn-press">← Back</button>
+  <h2 class="text-xl font-bold mb-3 dark:text-dark-text">📝 Homework</h2>
+  <input id="hwDate" type="date" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base focus:border-primary-500 outline-none">
+  <select id="hwBatch" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base"><option value="">All Batches</option></select>
+  <input id="hwSubject" placeholder="Subject (e.g. Maths, Science)" maxlength="50" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base focus:border-primary-500 outline-none">
+  <textarea id="hwText" maxlength="500" placeholder="Today's homework..." class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-4 mb-3 text-base h-28 focus:border-primary-500 outline-none"></textarea>
+  <input id="hwTopic" placeholder="Today's topic covered (optional)" maxlength="100" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base focus:border-primary-500 outline-none">
+  <input id="hwLink" type="url" placeholder="YouTube/Drive link (optional)" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base focus:border-primary-500 outline-none">
+  <div class="grid grid-cols-3 gap-2 mb-4">
+    <button onclick="saveHomework()" class="bg-purple-600 hover:bg-purple-700 text-white rounded-xl py-3 font-semibold text-xs btn-press transition-colors" style="min-height:48px">💾 Save</button>
+    <button onclick="shareHomeworkWA()" class="bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 font-semibold text-xs btn-press transition-colors" style="min-height:48px">💬 Text Only</button>
+    <button onclick="shareHomeworkWithFile()" class="bg-blue-600 hover:bg-blue-700 text-white rounded-xl py-3 font-semibold text-xs btn-press transition-colors" style="min-height:48px">📎 + Photo/PDF</button>
+  </div>
+  <div id="hwList"></div>
+</div>
+
+<!-- ══════════ ATTENDANCE ══════════ -->
+<div id="attendanceScreen" class="hidden w-full max-w-md md:max-w-4xl mx-auto px-4 md:px-8 pb-24 screen-transition">
+  <button onclick="show('appScreen')" class="text-primary-600 dark:text-primary-400 mb-3 text-base btn-press">← Back</button>
+  <h2 class="text-xl font-bold mb-3 dark:text-dark-text">Mark Attendance</h2>
+  <div id="holidayBanner" class="hidden bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-xl p-3 mb-3 text-sm">
+    <div class="flex justify-between items-center">
+      <span class="text-yellow-800 dark:text-yellow-300" id="holidayText">🎉 Holiday today</span>
+      <button onclick="overrideHoliday()" class="text-xs bg-yellow-500 text-white px-3 py-1 rounded-lg btn-press">Class today? Mark →</button>
+    </div>
+  </div>
+  <input id="attDate" type="date" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base focus:border-primary-500 outline-none" onchange="loadAttendance()">
+  <select id="attBatch" onchange="loadAttendance()" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base"><option value="">All Batches</option></select>
+  <div id="attList"></div>
+  <button onclick="saveAttendance()" id="saveAttBtn" class="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl py-4 font-semibold mt-3 text-base btn-press transition-colors" style="min-height:52px">Save Attendance</button>
+</div>
+
+<!-- ══════════ EXPENSES ══════════ -->
+<div id="expensesScreen" class="hidden w-full max-w-md md:max-w-4xl mx-auto px-4 md:px-8 pb-24 screen-transition">
+  <button onclick="show('appScreen')" class="text-primary-600 dark:text-primary-400 mb-3 text-base btn-press">← Back</button>
+  <h2 class="text-xl font-bold mb-3 dark:text-dark-text">Expenses</h2>
+  <div id="profitCard" class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4"></div>
+  <input id="expDesc" placeholder="Description (e.g. Whiteboard markers)" maxlength="80" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-2 text-base focus:border-primary-500 outline-none">
+  <div class="relative mb-2"><span class="absolute left-4 top-3 text-slate-500">₹</span><input id="expAmount" type="number" placeholder="Amount" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 pl-8 text-base focus:border-primary-500 outline-none"></div>
+  <select id="expCat" class="w-full border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 mb-3 text-base"><option>Rent</option><option>Supplies</option><option>Printing</option><option>Transport</option><option>Other</option></select>
+  <button onclick="addExpense()" class="w-full bg-slate-700 hover:bg-slate-800 text-white rounded-xl py-3 font-semibold mb-4 text-base btn-press transition-colors" style="min-height:48px">Add Expense</button>
+  <div id="expList"></div>
+</div>
+
+<!-- ══════════ REPORTS ══════════ -->
+<div id="reportsScreen" class="hidden w-full max-w-md md:max-w-4xl mx-auto px-4 md:px-8 pb-24 screen-transition">
+  <h2 class="text-xl font-bold mb-1 dark:text-dark-text">Reports</h2>
+  <p id="repMonth" class="text-sm text-slate-500 dark:text-dark-muted mb-4"></p>
+  <div id="repSummary" class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4"></div>
+  <div id="repTable" class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4"></div>
+  <button onclick="exportReport()" class="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl py-4 font-semibold text-base btn-press transition-colors" style="min-height:52px">📤 Export via WhatsApp (Pro)</button>
+</div>
+
+<!-- ══════════ SETTINGS ══════════ -->
+<div id="settingsScreen" class="hidden w-full max-w-md md:max-w-3xl mx-auto px-4 md:px-8 pb-24 screen-transition">
+  <h2 class="text-xl font-bold mb-4 dark:text-dark-text">Settings</h2>
+  <div id="proCard" class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4"></div>
+  <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4">
+    <p class="font-semibold mb-1 dark:text-dark-text">Your Payment Code</p>
+    <p class="text-xs text-slate-500 dark:text-dark-muted mb-2">Plot twist: this app's developer can't even set up a UPI ID 💀 (minor problem, literally 😅). Email your code below to <a href="/cdn-cgi/l/email-protection#781e0a1916131519160e111c1d17381f15191114561b1715" class="text-primary-600 dark:text-primary-400 font-semibold underline"><span class="__cf_email__" data-cfemail="1f796d7e7174727e7169767b7a705f78727e7673317c7072">[email&#160;protected]</span></a> and I'll manually activate Pro for you — trustworthy, mummy-approved 😂🙏</p>
+    <p id="myCode" class="text-xl font-mono font-bold text-primary-600 dark:text-primary-400 mb-3">Loading…</p>
+    <div class="flex gap-2 mb-3">
+      <button onclick="copyCode()" class="flex-1 bg-primary-600 hover:bg-primary-700 text-white rounded-xl py-3 font-medium text-sm btn-press transition-colors">Copy Code</button>
+      <a id="bmcLink" href="/cdn-cgi/l/email-protection#e7819586898c8a8689918e838288a7808a868e8bc984888ad89492858d828493daa18282a588888cc7b79588c7b5829692829493" target="_blank" class="flex-1 text-center bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl py-3 font-medium text-sm btn-press transition-colors" style="line-height:20px; padding-top:10px">Email for Pro →</a>
+    </div>
+    <p class="text-xs text-slate-400 dark:text-dark-muted mb-1">Got an activation code from admin via email? Enter it here:</p>
+    <div class="flex gap-2">
+      <input id="manualCode" placeholder="FB-XXXX-XXXXX" class="flex-1 border-2 border-slate-200 dark:border-dark-border dark:bg-dark-card dark:text-dark-text rounded-xl p-3 font-mono text-sm focus:border-primary-500 outline-none">
+      <button onclick="activateManual()" class="bg-green-600 hover:bg-green-700 text-white rounded-xl px-4 font-medium text-sm btn-press transition-colors">Activate</button>
+    </div>
+  </div>
+  <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4">
+    <p class="font-semibold mb-2 dark:text-dark-text">📅 Working Days</p>
+    <p class="text-xs text-slate-500 dark:text-dark-muted mb-3">Select your class days. Attendance auto-skips off days.</p>
+    <div class="flex gap-1 mb-3" id="workingDays">
+      <button onclick="toggleWorkDay(0)" id="wd0" class="flex-1 text-xs py-2 rounded-lg border-2 border-slate-200 dark:border-dark-border text-slate-500 dark:text-dark-muted btn-press">Sun</button>
+      <button onclick="toggleWorkDay(1)" id="wd1" class="flex-1 text-xs py-2 rounded-lg border-2 border-primary-600 bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300 btn-press">Mon</button>
+      <button onclick="toggleWorkDay(2)" id="wd2" class="flex-1 text-xs py-2 rounded-lg border-2 border-primary-600 bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300 btn-press">Tue</button>
+      <button onclick="toggleWorkDay(3)" id="wd3" class="flex-1 text-xs py-2 rounded-lg border-2 border-primary-600 bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300 btn-press">Wed</button>
+      <button onclick="toggleWorkDay(4)" id="wd4" class="flex-1 text-xs py-2 rounded-lg border-2 border-primary-600 bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300 btn-press">Thu</button>
+      <button onclick="toggleWorkDay(5)" id="wd5" class="flex-1 text-xs py-2 rounded-lg border-2 border-primary-600 bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300 btn-press">Fri</button>
+      <button onclick="toggleWorkDay(6)" id="wd6" class="flex-1 text-xs py-2 rounded-lg border-2 border-slate-200 dark:border-dark-border text-slate-500 dark:text-dark-muted btn-press">Sat</button>
+    </div>
+  </div>
+  <div id="accountCard" class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4"></div>
+  <div id="referralCard" class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4"></div>
+  <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4">
+    <p class="font-semibold mb-2 dark:text-dark-text">Support</p>
+    <a href="https://wa.me/919973898852?text=Hi!%20I%20need%20help%20with%20FeeBook" target="_blank" class="block text-center bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 font-medium btn-press transition-colors">💬 WhatsApp Support</a>
+    <p class="text-xs text-slate-400 dark:text-dark-muted mt-1 text-center">Usually replies within 24 hours</p>
+  </div>
+  <div class="bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-4">
+    <p class="font-semibold mb-1 dark:text-dark-text">About</p>
+    <p class="text-sm text-slate-500 dark:text-dark-muted">FeeBook v3.0<br>Built by an 11th grade student for Indian tuition teachers 🇮🇳</p>
+  </div>
+  <button onclick="doLogout()" class="w-full bg-red-600 hover:bg-red-700 text-white rounded-xl py-4 font-semibold text-base mt-2 btn-press transition-colors" style="min-height:52px">Logout</button>
+</div>
+
+<!-- BOTTOM NAV -->
+<div id="bottomNav" class="hidden fixed bottom-0 left-0 right-0 bg-white dark:bg-dark-card border-t border-slate-200 dark:border-dark-border max-w-md mx-auto flex justify-around py-2 z-40">
+  <button onclick="show('appScreen')" class="flex flex-col items-center text-primary-600 dark:text-primary-400 text-xs font-medium py-1 px-3 btn-press">🏠<span class="mt-1">Home</span></button>
+  <button onclick="show('studentsScreen')" class="flex flex-col items-center text-slate-500 dark:text-dark-muted text-xs font-medium py-1 px-3 btn-press">👥<span class="mt-1">Students</span></button>
+  <button onclick="show('reportsScreen'); renderReports()" class="flex flex-col items-center text-slate-500 dark:text-dark-muted text-xs font-medium py-1 px-3 btn-press">📊<span class="mt-1">Reports</span></button>
+  <button onclick="show('settingsScreen'); renderSettings()" class="flex flex-col items-center text-slate-500 dark:text-dark-muted text-xs font-medium py-1 px-3 btn-press">⚙️<span class="mt-1">Settings</span></button>
+</div>
+
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+'use strict';
+
+/* ===== Helpers / Cache ===== */
+const CACHE_TTL = 5 * 60 * 1000;
+const ym = d => d.toISOString().slice(0, 7);
+const clean = s => (s || '').replace(/[<>"'&]/g, '').trim();
+
+function cacheSet(key, data) {
+  try { localStorage.setItem('fb_' + key, JSON.stringify({ data, ts: Date.now() })); }
+  catch { clearOldCache(); }
+}
+function cacheGet(key, maxAge = CACHE_TTL) {
+  try {
+    const raw = localStorage.getItem('fb_' + key);
+    if (!raw) return null;
+    const { data, ts } = JSON.parse(raw);
+    if (Date.now() - ts > maxAge) return null;
+    return data;
+  } catch { return null; }
+}
+function cacheInvalidate(key) { localStorage.removeItem('fb_' + key); }
+function clearOldCache() {
+  Object.keys(localStorage).filter(k => k.startsWith('fb_')).forEach(k => localStorage.removeItem(k));
+}
+
+/* ===== Globals ===== */
+let sb = null;
+let user = null, profile = null;
+let students = [], payments = [];
+let month = new Date();
+let selectedMode = null;
+let currentDetail = null;
+let sessionHandled = false;
+let attState = {};
+let notesTimer = null;
+let BMC_PAGE = '#';
+
+let deferredPwaPrompt = null;
+let workingDays = [1,2,3,4,5]; // Mon-Fri default
+let holidayOverride = false;
+
+// Simple built-in holiday list (you can extend yearly)
+const INDIAN_HOLIDAYS_2025 = [
+  '2025-01-26','2025-03-17','2025-04-14','2025-04-18','2025-05-12',
+  '2025-08-15','2025-10-02','2025-10-20','2025-10-23','2025-11-05','2025-12-25'
+];
+const HOLIDAY_NAMES = {
+  '2025-01-26':'Republic Day 🇮🇳',
+  '2025-03-17':'Holi 🎨',
+  '2025-04-14':'Dr. Ambedkar Jayanti',
+  '2025-04-18':'Good Friday ✝️',
+  '2025-05-12':'Buddha Purnima',
+  '2025-08-15':'Independence Day 🇮🇳',
+  '2025-10-02':'Gandhi Jayanti',
+  '2025-10-20':'Dussehra',
+  '2025-10-23':'Diwali 🪔',
+  '2025-11-05':'Bhai Dooj',
+  '2025-12-25':'Christmas 🎄'
+};
+
+/* ===== UI ===== */
+const SCREENS = [
+  'authScreen','appScreen','studentsScreen','addStudentScreen',
+  'logPaymentScreen','studentDetailScreen','attendanceScreen',
+  'expensesScreen','reportsScreen','settingsScreen','homeworkScreen'
+];
+
+function toast(msg, color = 'bg-green-600', onClick = null) {
+  const t = document.getElementById('toast');
+  t.className = `fixed top-4 left-1/2 -translate-x-1/2 ${color} text-white px-5 py-3 rounded-xl shadow-lg z-50 max-w-sm text-sm text-center ${onClick ? 'cursor-pointer' : ''}`;
+  t.textContent = msg;
+  t.onclick = onClick || null;
+  t.classList.remove('hidden');
+  clearTimeout(t._h);
+  t._h = setTimeout(() => {
+    t.classList.add('hidden');
+    t.onclick = null;
+  }, onClick ? 10000 : 3000);
+}
+
+function show(id) {
+  SCREENS.forEach(s => {
+    const el = document.getElementById(s);
+    if (el) el.classList.add('hidden');
+  });
+  const target = document.getElementById(id);
+  if (target) {
+    target.classList.remove('hidden');
+    target.classList.add('screen-transition');
+  }
+  const hideNav = ['authScreen','addStudentScreen','logPaymentScreen'];
+  
+  // Toggle Bottom Nav bar securely (avoiding flex vs hidden CSS override)
+  const bottomNav = document.getElementById('bottomNav');
+  if (bottomNav) {
+    if (hideNav.includes(id) || window.innerWidth >= 768) {
+      bottomNav.classList.remove('flex');
+      bottomNav.classList.add('hidden');
+    } else {
+      bottomNav.classList.add('flex');
+      bottomNav.classList.remove('hidden');
+    }
+  }
+
+  // Toggle Desktop Nav bar securely (avoiding Tailwind md:flex specificity override)
+  const dsNav = document.getElementById('desktopNav');
+  if (dsNav) {
+    if (hideNav.includes(id)) {
+      dsNav.classList.remove('md:flex');
+      dsNav.classList.add('hidden');
+    } else {
+      // Show on desktop (add md:flex) but keep hidden on mobile (add hidden)!
+      dsNav.classList.add('md:flex');
+      dsNav.classList.add('hidden');
+    }
+  }
+
+  if (id === 'appScreen') renderDashboard();
+  if (id === 'studentsScreen') renderStudents();
+}
+
+function toggleAuth() {
+  document.getElementById('loginForm').classList.toggle('hidden');
+  document.getElementById('registerForm').classList.toggle('hidden');
+  document.getElementById('forgotForm').classList.add('hidden');
+  document.getElementById('authError').textContent = '';
+}
+function showForgotPassword() {
+  document.getElementById('loginForm').classList.add('hidden');
+  document.getElementById('registerForm').classList.add('hidden');
+  document.getElementById('forgotForm').classList.remove('hidden');
+  document.getElementById('authError').textContent = '';
+}
+function showLoginForm() {
+  document.getElementById('loginForm').classList.remove('hidden');
+  document.getElementById('registerForm').classList.add('hidden');
+  document.getElementById('forgotForm').classList.add('hidden');
+  document.getElementById('authError').textContent = '';
+}
+
+function hideLoading() {
+  document.getElementById('loadingScreen').style.display = 'none';
+}
+
+/* ===== Dark Mode ===== */
+function initDarkMode() {
+  const saved = localStorage.getItem('fb_darkmode');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const isDark = saved !== null ? saved === 'true' : prefersDark;
+  document.documentElement.classList.toggle('dark', isDark);
+  const btn = document.getElementById('darkToggle');
+  if (btn) btn.textContent = isDark ? '☀️' : '🌙';
+}
+function toggleDarkMode() {
+  const isDark = document.documentElement.classList.toggle('dark');
+  localStorage.setItem('fb_darkmode', isDark);
+  document.getElementById('darkToggle').textContent = isDark ? '☀️' : '🌙';
+  document.getElementById('themeColor').content = isDark ? '#0f172a' : '#2563EB';
+}
+
+/* ===== PWA Install Prompt ===== */
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPwaPrompt = e;
+  const dismissed = localStorage.getItem('fb_pwa_dismissed');
+  const installed = localStorage.getItem('fb_pwa_installed');
+  if (!dismissed && !installed) {
+    setTimeout(() => document.getElementById('pwaPrompt').classList.remove('hidden'), 2500);
+  }
+});
+
+window.addEventListener('appinstalled', () => {
+  localStorage.setItem('fb_pwa_installed', 'true');
+  closePwa();
+  toast('FeeBook installed! 🎉 Find it on your home screen');
+});
+
+function installPwa() {
+  if (!deferredPwaPrompt) {
+    toast('To install: browser menu → "Add to Home Screen"', 'bg-slate-700');
+    closePwa();
+    return;
+  }
+  deferredPwaPrompt.prompt();
+  deferredPwaPrompt.userChoice.then(r => {
+    if (r.outcome === 'accepted') localStorage.setItem('fb_pwa_installed', 'true');
+    deferredPwaPrompt = null;
+    closePwa();
+  });
+}
+function closePwa() {
+  document.getElementById('pwaPrompt').classList.add('hidden');
+  localStorage.setItem('fb_pwa_dismissed', 'true');
+}
+
+/* ===== Working days (local only) ===== */
+function loadWorkingDays() {
+  const saved = localStorage.getItem('fb_working_days');
+  if (saved) workingDays = JSON.parse(saved);
+  updateWorkingDayUI();
+}
+function toggleWorkDay(day) {
+  const idx = workingDays.indexOf(day);
+  if (idx > -1) workingDays.splice(idx, 1);
+  else workingDays.push(day);
+  localStorage.setItem('fb_working_days', JSON.stringify(workingDays));
+  updateWorkingDayUI();
+}
+function updateWorkingDayUI() {
+  [0,1,2,3,4,5,6].forEach(d => {
+    const btn = document.getElementById('wd' + d);
+    if (!btn) return;
+    if (workingDays.includes(d)) {
+      btn.className = 'flex-1 text-xs py-2 rounded-lg border-2 border-primary-600 bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300 btn-press';
+    } else {
+      btn.className = 'flex-1 text-xs py-2 rounded-lg border-2 border-slate-200 dark:border-dark-border text-slate-500 dark:text-dark-muted btn-press';
+    }
+  });
+}
+
+/* ===== Init (Supabase config from /api/config) ===== */
+async function initApp() {
+  initDarkMode();
+  loadWorkingDays();
+
+  try {
+    const res = await fetch('/api/config');
+    if (!res.ok) throw new Error('Config fetch failed');
+    const config = await res.json();
+    if (!config.url || !config.key) throw new Error('Invalid config');
+
+    sb = window.supabase.createClient(config.url, config.key);
+    BMC_PAGE = config.bmc || '#';
+
+    sb.auth.onAuthStateChange((event, session) => {
+      if (session && !sessionHandled) {
+        sessionHandled = true;
+        user = session.user;
+        loadApp();
+      } else if (!session && event !== 'INITIAL_SESSION') {
+        sessionHandled = false;
+        user = null;
+        hideLoading();
+        show('authScreen');
+      }
+    });
+
+    const { data: { session } } = await sb.auth.getSession();
+    if (!session) {
+      hideLoading();
+      show('authScreen');
+    }
+  } catch (e) {
+    hideLoading();
+    show('authScreen');
+    const errEl = document.getElementById('authError');
+    if (errEl) {
+      errEl.innerHTML = 'Connection failed. Please check your internet connection or <button onclick="initApp()" class="text-primary-600 underline font-semibold focus:outline-none">Retry</button>';
+    }
+    console.error('Init failed:', e);
+  }
+}
+
+/* ===== AUTH ===== */
+async function doGoogleLogin() {
+  const errEl = document.getElementById('authError');
+  errEl.textContent = 'Redirecting to Google…';
+
+  const { error } = await sb.auth.signInWithOAuth({
+    provider: 'google',
+    options: {
+      redirectTo: window.location.origin + '/app.html'
+    }
+  });
+
+  if (error) errEl.textContent = error.message;
+}
+
+async function doRegister() {
+  const name = clean(document.getElementById('regName').value);
+  const phone = document.getElementById('regPhone').value.trim();
+  const email = document.getElementById('regEmail').value.trim();
+  const pw = document.getElementById('regPassword').value;
+  const ref = clean(document.getElementById('regReferral').value);
+  const errEl = document.getElementById('authError');
+
+  if (!name) return errEl.textContent = 'Enter your name';
+  if (!/^[6-9]\d{9}$/.test(phone)) return errEl.textContent = 'Phone must be 10 digits starting with 6-9';
+  if (!email.includes('@')) return errEl.textContent = 'Enter a valid email';
+  if (pw.length < 6) return errEl.textContent = 'Password must be 6+ characters';
+
+  errEl.textContent = 'Creating account…';
+  errEl.style.color = ''; // Reset text color
+
+  // Sign up in Supabase with metadata so we can backfill the profile after verification
+  const { data, error } = await sb.auth.signUp({
+    email,
+    password: pw,
+    options: {
+      data: {
+        name: name,
+        phone: phone,
+        referral: ref
+      }
+    }
+  });
+
+  if (error) return errEl.textContent = error.message;
+  if (!data.user) return errEl.textContent = 'Signup failed. Try again.';
+
+  // If email verification is ON, no session is created yet
+  if (!data.session) {
+    errEl.style.color = '#16A34A'; // Success green
+    errEl.textContent = 'Verification email sent! Please check your Gmail inbox and click the verification link to log in.';
+    document.getElementById('regPassword').value = '';
+    return;
+  }
+
+  // If email verification is OFF
+  errEl.textContent = 'Setting up profile…';
+  const { error: profileError } = await sb.from('profiles').upsert({ id: data.user.id, name, phone });
+  if (profileError) return errEl.textContent = 'Profile save failed: ' + profileError.message;
+
+  if (ref) {
+    try { await sb.rpc('process_referral', { p_code: ref }); }
+    catch (e) { console.warn('Referral failed:', e); }
+  }
+
+  errEl.textContent = '';
+  user = data.user;
+  if (!sessionHandled) { sessionHandled = true; loadApp(); }
+}
+
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pw = document.getElementById('loginPassword').value;
+  const errEl = document.getElementById('authError');
+
+  if (!email || !pw) return errEl.textContent = 'Enter email and password';
+  errEl.textContent = 'Logging in…';
+
+  const { data, error } = await sb.auth.signInWithPassword({ email, password: pw });
+  if (error) return errEl.textContent = error.message;
+
+  errEl.textContent = '';
+  user = data.user;
+  if (!sessionHandled) { sessionHandled = true; loadApp(); }
+}
+
+async function doForgotPassword() {
+  const email = document.getElementById('forgotEmail').value.trim();
+  const errEl = document.getElementById('authError');
+  if (!email.includes('@')) return errEl.textContent = 'Enter a valid email address';
+
+  errEl.textContent = 'Sending reset link…';
+  const { error } = await sb.auth.resetPasswordForEmail(email, {
+    redirectTo: window.location.origin + '/app.html?reset=true'
+  });
+  if (error) return errEl.textContent = error.message;
+
+  errEl.textContent = '';
+  toast('✅ Reset link sent! Check inbox + spam', 'bg-green-600');
+  setTimeout(() => showLoginForm(), 1500);
+}
+
+async function doLogout() {
+  await sb.auth.signOut();
+  clearOldCache();
+  location.reload();
+}
+
+/* ===== LOAD APP ===== */
+async function loadApp() {
+  hideLoading();
+
+  // fetch profile
+  const { data } = await sb.from('profiles').select('*').eq('id', user.id).single();
+  profile = data || { 
+    name: user.user_metadata?.name || user.user_metadata?.full_name || 'Teacher', 
+    phone: user.user_metadata?.phone || '' 
+  };
+
+  // Backfill profile if missing (handles Google Login AND email signup after verification!)
+  if (!data || !data.name) {
+    const metaName = user.user_metadata?.name || user.user_metadata?.full_name;
+    const metaPhone = user.user_metadata?.phone || '';
+    const metaReferral = user.user_metadata?.referral || '';
+
+    if (metaName) {
+      await sb.from('profiles').upsert({
+        id: user.id,
+        name: metaName,
+        phone: metaPhone
+      });
+      profile.name = metaName;
+      profile.phone = metaPhone;
+
+      // Handle referral code during profile backfill if it was in metadata
+      if (metaReferral) {
+        try {
+          await sb.rpc('process_referral', { p_code: metaReferral });
+        } catch (e) {
+          console.warn('Referral failed:', e);
+        }
+      }
+    }
+  }
+
+  document.getElementById('teacherName').textContent = '👋 ' + (profile.name || 'Teacher');
+
+  await refreshPro();
+  show('appScreen');
+  renderSettings();
+
+  // Handle manifest shortcuts like /?action=add-student
+  try {
+    const p = new URLSearchParams(location.search);
+    const action = p.get('action');
+    if (action === 'add-student') show('addStudentScreen');
+    if (action === 'attendance') openAttendance();
+    if (action) history.replaceState({}, '', location.pathname);
+  } catch {}
+}
+
+
+async function refreshPro() {
+  const cacheKey = `pro_${user.id}`;
+  let isPro = cacheGet(cacheKey, 60000);
+  if (isPro === null) {
+    const { data } = await sb.rpc('check_pro_status');
+    isPro = !!data;
+    cacheSet(cacheKey, isPro);
+  }
+
+  window.proCached = isPro;
+
+  const badge = document.getElementById('proBadge');
+  const dBadge = document.getElementById('desktopProBadge');
+  if (badge) {
+    badge.textContent = isPro ? 'PRO ✨' : 'FREE';
+    badge.className = isPro
+      ? 'text-xs bg-yellow-400 text-yellow-900 px-3 py-1 rounded-full font-bold'
+      : 'text-xs bg-white/20 px-3 py-1 rounded-full font-medium';
+  }
+  if (dBadge) {
+    dBadge.textContent = isPro ? 'PRO ✨' : 'FREE';
+    dBadge.className = isPro
+      ? 'text-[10px] bg-yellow-400 text-yellow-900 px-2.5 py-1 rounded-full font-bold'
+      : 'text-[10px] bg-primary-100 text-primary-700 dark:bg-primary-900 dark:text-primary-300 px-2.5 py-1 rounded-full font-bold';
+  }
+
+  // expiry banner
+  const { data: subs } = await sb.from('subscriptions')
+    .select('expiry_date').eq('teacher_id', user.id)
+    .order('expiry_date', { ascending: false }).limit(1);
+
+  const banner = document.getElementById('expiryBanner');
+  const exp = subs?.[0] ? new Date(subs[0].expiry_date) : null;
+
+  if (exp && exp > new Date()) {
+    const days = Math.ceil((exp - new Date()) / 864e5);
+    if (days <= 7) {
+      banner.className = 'mx-4 mt-3 rounded-xl p-3 text-sm font-medium bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-300';
+      banner.textContent = `⚠️ Pro expires in ${days} day${days > 1 ? 's' : ''} — Email to renew`;
+      banner.classList.remove('hidden');
+    } else banner.classList.add('hidden');
+  } else if (subs?.[0] && !isPro) {
+    banner.className = 'mx-4 mt-3 rounded-xl p-3 text-sm font-medium bg-red-100 dark:bg-red-900/30 text-red-700 dark:text-red-400';
+    banner.textContent = 'Pro expired — your data is safe. Email frankmanvideo@gmail.com to renew ₹99';
+    banner.classList.remove('hidden');
+  } else banner.classList.add('hidden');
+}
+
+/* ===== Dashboard Data ===== */
+async function loadDashboardData(forceRefresh = false) {
+  const cacheKey = `dashboard_${user.id}_${ym(month)}`;
+  if (!forceRefresh) {
+    const cached = cacheGet(cacheKey);
+    if (cached) { students = cached.students; payments = cached.payments; return; }
+  }
+
+  const start = ym(month) + '-01';
+  const end = new Date(month.getFullYear(), month.getMonth() + 1, 1).toISOString().slice(0, 10);
+
+  const [stuRes, payRes] = await Promise.all([
+    sb.from('students').select('*').eq('teacher_id', user.id).eq('is_active', true).order('name'),
+    sb.from('payments').select('*').eq('teacher_id', user.id).gte('payment_date', start).lt('payment_date', end)
+  ]);
+
+  students = stuRes.data || [];
+  payments = payRes.data || [];
+  cacheSet(cacheKey, { students, payments });
+}
+
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible' && user) {
+    const cached = cacheGet(`dashboard_${user.id}_${ym(month)}`);
+    if (!cached) renderDashboard();
+  }
+});
+
+/* ===== Dashboard Render ===== */
+function getPaid(sid) {
+  return payments.filter(p => p.student_id === sid).reduce((t, p) => t + parseFloat(p.amount), 0);
+}
+
+function changeMonth(delta) {
+  const now = new Date();
+  const newMonth = new Date(month.getFullYear(), month.getMonth() + delta);
+
+  if (delta > 0 && newMonth > now) {
+    toast('Cannot go to future months', 'bg-slate-700');
+    return;
+  }
+
+  if (!window.proCached && delta !== 0) {
+    const diff = (now.getFullYear() - newMonth.getFullYear()) * 12 + (now.getMonth() - newMonth.getMonth());
+    if (diff > 0) {
+      toast('Previous months history is a Pro feature', 'bg-slate-700');
+      return;
+    }
+  }
+
+  month = newMonth;
+  renderDashboard();
+}
+
+async function renderDashboard() {
+  document.getElementById('monthLabel').textContent =
+    month.toLocaleString('en-IN', { month: 'long', year: 'numeric' });
+
+  document.getElementById('studentList').innerHTML = `
+    <div class="px-4 py-8 text-center">
+      <div class="skeleton h-16 rounded-xl mb-3"></div>
+      <div class="skeleton h-16 rounded-xl mb-3"></div>
+      <div class="skeleton h-16 rounded-xl"></div>
+    </div>`;
+
+  await loadDashboardData();
+
+  let col = 0, pen = 0;
+  const groups = { Pending: [], Partial: [], Paid: [] };
+
+  students.forEach(s => {
+    const p = getPaid(s.id);
+    const bal = Math.max(s.monthly_fee - p, 0);
+    col += p; pen += bal;
+    const g = p === 0 ? 'Pending' : bal > 0 ? 'Partial' : 'Paid';
+    groups[g].push({ s, p, bal });
+  });
+
+  const colors = { Pending: 'red', Partial: 'yellow', Paid: 'green' };
+  const labels = { Pending: '❌ PENDING', Partial: '🟡 PARTIAL', Paid: '✅ PAID' };
+  let html = '';
+
+  for (const [g, arr] of Object.entries(groups)) {
+    if (!arr.length) continue;
+    html += `<div class="bg-${colors[g]}-600 text-white rounded-t-xl px-4 py-2 text-sm font-bold mt-4 flex justify-between">
+      <span>${labels[g]}</span><span>${arr.length} student${arr.length > 1 ? 's' : ''}</span></div>`;
+    arr.forEach(({ s, p, bal }) => {
+      const pct = Math.min(100, Math.round(p / s.monthly_fee * 100));
+      html += `
+        <div class="bg-white dark:bg-dark-card p-4 border-x border-b last:rounded-b-xl border-slate-100 dark:border-dark-border">
+          <div class="flex justify-between items-start mb-1">
+            <button class="text-left font-bold text-slate-800 dark:text-dark-text text-base btn-press"
+              onclick="openDetail('${s.id}')">${s.name}</button>
+            <span class="text-xs text-slate-400 dark:text-dark-muted ml-2">${s.batch_name || ''}</span>
+          </div>
+          <p class="text-sm text-slate-500 dark:text-dark-muted mb-2">
+            Fee ₹${s.monthly_fee} · Paid ₹${p}${g !== 'Paid' ? ` · Bal ₹${bal}` : ' ✓'}
+          </p>
+          ${g !== 'Paid' ? `<div class="w-full bg-slate-100 dark:bg-dark-border rounded-full h-1.5 mb-2">
+            <div class="bg-${colors[g]}-500 h-1.5 rounded-full transition-all duration-500" style="width:${pct}%"></div>
+          </div>` : ''}
+          <div class="flex gap-2">
+            <button onclick="openLog('${s.id}')"
+              class="flex-1 bg-primary-600 hover:bg-primary-700 text-white rounded-lg py-2 text-sm font-medium btn-press transition-colors"
+              style="min-height:40px">Log Payment</button>
+            ${g !== 'Paid' ? `<button onclick="waRemind('${s.id}',${bal})"
+              class="flex-1 bg-green-500 hover:bg-green-600 text-white rounded-lg py-2 text-sm font-medium btn-press transition-colors"
+              style="min-height:40px">💬 Remind</button>` : ''}
+          </div>
+        </div>`;
+    });
+  }
+
+  document.getElementById('studentList').innerHTML = html ||
+    `<div class="text-center text-slate-400 dark:text-dark-muted mt-12 p-4">
+      <div class="text-5xl mb-3">📚</div>
+      <p class="font-semibold text-lg">No students yet</p>
+      <p class="text-sm mt-1">Tap "+ Student" to add your first student</p>
+    </div>`;
+
+  document.getElementById('totalStudents').textContent = students.length;
+  document.getElementById('totalCollected').textContent = '₹' + col.toLocaleString('en-IN');
+  document.getElementById('totalPending').textContent = '₹' + pen.toLocaleString('en-IN');
+}
+
+/* ===== Students ===== */
+async function loadStudents(forceRefresh = false) {
+  const cacheKey = `students_${user.id}`;
+  if (!forceRefresh) {
+    const cached = cacheGet(cacheKey);
+    if (cached) { students = cached; return; }
+  }
+  const { data } = await sb.from('students').select('*')
+    .eq('teacher_id', user.id).eq('is_active', true).order('name');
+  students = data || [];
+  cacheSet(cacheKey, students);
+}
+
+async function renderStudents() {
+  await loadStudents();
+  filterStudents();
+}
+
+function filterStudents() {
+  const q = (document.getElementById('studentSearch').value || '').toLowerCase();
+  const filtered = students.filter(s => s.name.toLowerCase().includes(q));
+  document.getElementById('allStudents').innerHTML = filtered.map(s => `
+    <button onclick="openDetail('${s.id}')"
+      class="w-full bg-white dark:bg-dark-card rounded-xl p-4 shadow-sm border border-slate-100 dark:border-dark-border mb-2 text-left btn-press hover:border-primary-200 transition-colors">
+      <div class="flex justify-between items-center">
+        <span class="font-bold text-slate-800 dark:text-dark-text">${s.name}</span>
+        <span class="text-sm text-slate-500 dark:text-dark-muted">₹${s.monthly_fee}/mo</span>
+      </div>
+      <p class="text-xs text-slate-400 dark:text-dark-muted mt-0.5">${s.batch_name || 'No batch'}</p>
+    </button>`).join('') ||
+    '<p class="text-center text-slate-400 dark:text-dark-muted mt-6">No students found</p>';
+}
+
+async function addStudent() {
+  const name = clean(document.getElementById('stuName').value);
+  const phone = document.getElementById('stuParentPhone').value.trim();
+  const stuPhone = document.getElementById('stuStudentPhone').value.trim();
+  const fee = parseFloat(document.getElementById('stuFee').value);
+  const batch = clean(document.getElementById('stuBatch').value);
+
+  if (!name) return toast('Enter student name', 'bg-red-600');
+  if (!/^[6-9]\d{9}$/.test(phone)) return toast('Parent phone must be 10 digits starting 6-9', 'bg-red-600');
+  if (stuPhone && !/^[6-9]\d{9}$/.test(stuPhone)) return toast('Student phone must be 10 digits starting 6-9', 'bg-red-600');
+  if (!fee || fee < 1 || fee > 100000) return toast('Enter fee between ₹1 and ₹1,00,000', 'bg-red-600');
+
+  const dup = students.find(s => s.name.toLowerCase() === name.toLowerCase());
+  if (dup && !confirm(`"${dup.name}" already exists. Add anyway?`)) return;
+
+  const FREE_LIMIT = 25;
+  if (!window.proCached) {
+    const { count } = await sb.from('students')
+      .select('*', { count: 'exact', head: true })
+      .eq('teacher_id', user.id).eq('is_active', true);
+    if (count >= FREE_LIMIT) return toast(`Free plan: max ${FREE_LIMIT} students. Go Pro for unlimited!`, 'bg-slate-700');
+  }
+
+  const btn = document.getElementById('addStuBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+
+  // Try insert with student_phone; if column doesn't exist, retry without it
+  const insertData = {
+    teacher_id: user.id,
+    name,
+    parent_phone: phone,
+    monthly_fee: fee,
+    batch_name: batch
+  };
+  if (stuPhone) insertData.student_phone = stuPhone;
+
+  let { error } = await sb.from('students').insert(insertData);
+
+  if (error && String(error.message || '').toLowerCase().includes('student_phone')) {
+    // retry without student_phone
+    delete insertData.student_phone;
+    const retry = await sb.from('students').insert(insertData);
+    error = retry.error;
+  }
+
+  btn.disabled = false; btn.textContent = 'Save Student';
+  if (error) return toast(error.message, 'bg-red-600');
+
+  cacheInvalidate(`students_${user.id}`);
+  cacheInvalidate(`dashboard_${user.id}_${ym(month)}`);
+
+  ['stuName','stuParentPhone','stuStudentPhone','stuFee','stuBatch'].forEach(id => document.getElementById(id).value = '');
+
+  toast('Student added ✓');
+  show('appScreen');
+}
+
+/* ===== Payments ===== */
+function openLog(sid) {
+  const s = students.find(x => x.id === sid) || {};
+  const p = getPaid(sid);
+  document.getElementById('payStudentId').value = sid;
+  document.getElementById('payStudentInfo').textContent =
+    `${s.name} — Fee ₹${s.monthly_fee} · Paid ₹${p} · Balance ₹${Math.max(s.monthly_fee - p, 0)}`;
+  document.getElementById('payDate').value = new Date().toISOString().slice(0, 10);
+  document.getElementById('payAmount').value = '';
+  document.getElementById('payNote').value = '';
+  selectMode('');
+  show('logPaymentScreen');
+}
+
+function selectMode(m) {
+  selectedMode = m || null;
+  ['Cash','UPI','Bank'].forEach(x => {
+    document.getElementById('mode' + x).className = m === x
+      ? 'flex-1 border-2 border-primary-600 bg-primary-50 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded-xl py-3 font-medium text-sm btn-press'
+      : 'flex-1 border-2 border-slate-200 dark:border-dark-border rounded-xl py-3 font-medium text-sm btn-press dark:text-dark-text';
+  });
+}
+
+async function savePayment() {
+  const sid = document.getElementById('payStudentId').value;
+  const amt = parseFloat(document.getElementById('payAmount').value);
+  const note = clean(document.getElementById('payNote').value);
+  const date = document.getElementById('payDate').value;
+
+  if (!amt || amt <= 0) return toast('Enter a valid amount', 'bg-red-600');
+  if (!selectedMode) return toast('Select Cash, UPI, or Bank', 'bg-red-600');
+  if (!date) return toast('Select a payment date', 'bg-red-600');
+
+  const s = students.find(x => x.id === sid);
+  const bal = s.monthly_fee - getPaid(sid);
+  if (amt > bal && bal > 0 && !confirm(`₹${amt} exceeds balance ₹${bal}. Continue as advance?`)) return;
+
+  const btn = document.getElementById('savePayBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+
+  const client_id = crypto.randomUUID();
+  const row = {
+    client_id,
+    student_id: sid,
+    teacher_id: user.id,
+    amount: amt,
+    payment_mode: selectedMode,
+    note,
+    payment_date: date
+  };
+
+  const saved = await savePaymentRow(row);
+
+  btn.disabled = false; btn.textContent = 'Save Payment';
+
+  cacheInvalidate(`dashboard_${user.id}_${ym(month)}`);
+  cacheInvalidate(`payments_${user.id}_${ym(month)}`);
+
+  if (saved) {
+    toast(`₹${amt} logged for ${s.name} ✓ — tap to undo`, 'bg-green-600', async () => {
+      const { error } = await sb.from('payments').delete().eq('client_id', client_id);
+      if (!error) {
+        cacheInvalidate(`dashboard_${user.id}_${ym(month)}`);
+        toast('Payment undone', 'bg-slate-700');
+        renderDashboard();
+      }
+    });
+  } else {
+    toast('Saved offline — will sync when online', 'bg-yellow-600');
+  }
+
+  show('appScreen');
+}
+
+async function savePaymentRow(row) {
+  if (!navigator.onLine) { offlineQueue(row); return false; }
+  const { error } = await sb.from('payments').insert(row);
+  if (error) { offlineQueue(row); return false; }
+  return true;
+}
+
+/* ===== Offline Queue for payments ===== */
+function offlineQueue(row) {
+  const q = JSON.parse(localStorage.getItem('fb_offline_queue') || '[]');
+  q.push(row);
+  localStorage.setItem('fb_offline_queue', JSON.stringify(q));
+  updateOfflineBanner();
+}
+async function flushOfflineQueue() {
+  if (!navigator.onLine) return;
+  const q = JSON.parse(localStorage.getItem('fb_offline_queue') || '[]');
+  if (!q.length) return;
+  let synced = 0;
+  for (const row of q) {
+    const { error } = await sb.from('payments').insert(row);
+    if (!error) synced++;
+  }
+  localStorage.setItem('fb_offline_queue', '[]');
+  if (synced > 0) toast(`Synced ${synced} offline payment${synced > 1 ? 's' : ''} ✓`);
+  updateOfflineBanner();
+}
+function updateOfflineBanner() {
+  const q = JSON.parse(localStorage.getItem('fb_offline_queue') || '[]');
+  const banner = document.getElementById('offlineBanner');
+  if (!navigator.onLine) {
+    banner.textContent = '📴 Offline — payments will sync when online';
+    banner.classList.remove('hidden');
+  } else if (q.length > 0) {
+    banner.textContent = `🔄 Syncing ${q.length} offline payment${q.length > 1 ? 's' : ''}…`;
+    banner.classList.remove('hidden');
+  } else banner.classList.add('hidden');
+}
+window.addEventListener('online', () => { flushOfflineQueue(); updateOfflineBanner(); });
+window.addEventListener('offline', updateOfflineBanner);
+setInterval(updateOfflineBanner, 5000);
+
+/* ===== WhatsApp Reminder ===== */
+function waRemind(sid, bal) {
+  const s = students.find(x => x.id === sid);
+  if (!s) return;
+  const msg = `Namaste ji 🙏\n\nYe ek vinit suchna hai ki *${s.name}* ki is mahine (${month.toLocaleString('en-IN', { month: 'long' })}) ki tuition fees mein *₹${bal}* baaki hai.\n\nAapki suvidha anusar jald payment kar dein.\n\nDhanyawad 🙏\n${profile.name}\nFeeBook Fee Tracker`;
+  const phone = s.parent_phone ? '91' + s.parent_phone : '';
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(msg)}`);
+}
+
+/* ===== Student Detail ===== */
+async function openDetail(sid) {
+  await loadStudents();
+  currentDetail = students.find(x => x.id === sid);
+  if (!currentDetail) return;
+
+  document.getElementById('detName').textContent = currentDetail.name;
+  document.getElementById('detBatch').textContent = currentDetail.batch_name || '';
+  document.getElementById('detCall').href = 'tel:91' + currentDetail.parent_phone;
+  document.getElementById('stuNotes').value = currentDetail.performance_notes || '';
+
+  const p = getPaid(sid);
+  const bal = Math.max(currentDetail.monthly_fee - p, 0);
+  const pct = Math.min(100, Math.round(p / currentDetail.monthly_fee * 100));
+
+  document.getElementById('detSummary').innerHTML = `
+    <div class="flex justify-between text-sm mb-2">
+      <span class="text-slate-600 dark:text-dark-muted">Monthly ₹${currentDetail.monthly_fee}</span>
+      <span class="text-green-600 font-bold">Paid ₹${p}</span>
+      <span class="${bal > 0 ? 'text-red-600' : 'text-green-600'} font-bold">
+        ${bal > 0 ? `Bal ₹${bal}` : 'Fully Paid ✓'}</span>
+    </div>
+    <div class="w-full bg-slate-200 dark:bg-dark-border rounded-full h-2">
+      <div class="bg-green-600 h-2 rounded-full transition-all duration-500" style="width:${pct}%"></div>
+    </div>
+    <p class="text-xs text-slate-400 dark:text-dark-muted mt-1 text-right">${pct}% paid</p>`;
+
+  detTab('payments');
+  show('studentDetailScreen');
+}
+
+function detTab(t) {
+  const map = { payments:'Payments', attendance:'Attendance', notes:'Notes' };
+  Object.keys(map).forEach(x => {
+    document.getElementById('det' + map[x]).classList.toggle('hidden', x !== t);
+    document.getElementById('tab' + map[x]).className = x === t
+      ? 'flex-1 py-3 font-semibold text-primary-600 dark:text-primary-400 border-b-2 border-primary-600 text-sm'
+      : 'flex-1 py-3 text-slate-500 dark:text-dark-muted text-sm';
+  });
+  if (t === 'payments') renderDetailPayments();
+  if (t === 'attendance') renderDetAttendance();
+}
+
+function renderDetailPayments() {
+  const list = payments
+    .filter(x => x.student_id === currentDetail.id)
+    .sort((a, b) => b.payment_date.localeCompare(a.payment_date));
+
+  document.getElementById('detPayments').innerHTML = list.map(p => `
+    <div class="bg-white dark:bg-dark-card rounded-xl p-3 mb-2 border border-slate-100 dark:border-dark-border">
+      <div class="flex justify-between text-sm">
+        <span class="text-slate-500 dark:text-dark-muted">${p.payment_date}</span>
+        <span class="font-bold text-slate-800 dark:text-dark-text">₹${p.amount}</span>
+        <span class="text-slate-400 dark:text-dark-muted">${p.payment_mode}</span>
+      </div>
+      ${p.note ? `<p class="text-xs text-slate-400 dark:text-dark-muted mt-1">${p.note}</p>` : ''}
+    </div>`).join('') ||
+    '<p class="text-center text-slate-400 dark:text-dark-muted mt-4 py-4">No payments this month</p>';
+}
+
+async function renderDetAttendance() {
+  const start = ym(month) + '-01';
+  const end = new Date(month.getFullYear(), month.getMonth() + 1, 1).toISOString().slice(0, 10);
+  const { data } = await sb.from('attendance')
+    .select('*').eq('student_id', currentDetail.id).gte('date', start).lt('date', end);
+
+  const byDay = {};
+  (data || []).forEach(a => byDay[parseInt(a.date.slice(8))] = a.status);
+  const days = new Date(month.getFullYear(), month.getMonth() + 1, 0).getDate();
+  const colors = {
+    present: 'bg-green-600 text-white',
+    absent: 'bg-red-500 text-white',
+    late: 'bg-yellow-500 text-white'
+  };
+
+  let html = '<div class="grid grid-cols-7 gap-1 mb-3">';
+  ['S','M','T','W','T','F','S'].forEach(d => html += `<div class="text-center text-xs text-slate-400 dark:text-dark-muted py-1">${d}</div>`);
+  for (let d = 1; d <= days; d++) {
+    const st = byDay[d];
+    html += `<div class="aspect-square rounded-lg flex items-center justify-center text-xs font-medium ${st ? colors[st] : 'bg-slate-100 dark:bg-dark-border text-slate-400 dark:text-dark-muted'}">${d}</div>`;
+  }
+  html += '</div>';
+
+  const tot = (data || []).length;
+  const pre = (data || []).filter(a => a.status !== 'absent').length;
+  html += `<p class="text-sm text-slate-600 dark:text-dark-muted">${pre}/${tot} classes attended (${tot ? Math.round(pre/tot*100) : 0}%)</p>`;
+  document.getElementById('detAttendance').innerHTML = html;
+}
+
+function saveNotes() {
+  clearTimeout(notesTimer);
+  notesTimer = setTimeout(async () => {
+    const notes = clean(document.getElementById('stuNotes').value);
+    await sb.from('students').update({ performance_notes: notes }).eq('id', currentDetail.id);
+    cacheInvalidate(`students_${user.id}`);
+  }, 800);
+}
+
+async function deleteStudent() {
+  if (!confirm(`Remove ${currentDetail.name}? Payment history will be preserved.`)) return;
+  await sb.from('students').update({ is_active: false }).eq('id', currentDetail.id);
+  cacheInvalidate(`students_${user.id}`);
+  cacheInvalidate(`dashboard_${user.id}_${ym(month)}`);
+  toast('Student removed');
+  show('appScreen');
+}
+
+function waRemindDetail() {
+  waRemind(currentDetail.id, Math.max(currentDetail.monthly_fee - getPaid(currentDetail.id), 0));
+}
+
+/* ===== Receipt (native share first, WhatsApp fallback) ===== */
+async function generateReceipt() {
+  const s = currentDetail;
+  const p = getPaid(s.id);
+  const bal = Math.max(s.monthly_fee - p, 0);
+  const today = new Date().toLocaleDateString('en-IN');
+  const monthName = month.toLocaleString('en-IN', { month: 'long', year: 'numeric' });
+
+  const receipt = `🧾 *FEE RECEIPT*
+━━━━━━━━━━━━━━━━━━━━
+📚 FeeBook
+
+*Teacher:* ${profile.name}
+*Student:* ${s.name}
+*Month:* ${monthName}
+*Date:* ${today}
+━━━━━━━━━━━━━━━━━━━━
+*Monthly Fee:* ₹${s.monthly_fee}
+*Amount Paid:* ₹${p}
+*Balance Due:* ₹${bal}
+*Status:* ${bal === 0 ? '✅ FULLY PAID' : bal === s.monthly_fee ? '❌ PENDING' : '🟡 PARTIALLY PAID'}
+━━━━━━━━━━━━━━━━━━━━
+Generated by FeeBook 📚
+feebook.vercel.app`;
+
+  if (navigator.share) {
+    try {
+      await navigator.share({ title: `Fee Receipt - ${s.name}`, text: receipt });
+      toast('Receipt shared ✓');
+      return;
+    } catch (err) {
+      if (err?.name === 'AbortError') return;
+    }
+  }
+
+  const phone = s.parent_phone ? '91' + s.parent_phone : '';
+  window.open(`https://wa.me/${phone}?text=${encodeURIComponent(receipt)}`);
+}
+
+/* ===== Attendance (Free) + Holiday banner ===== */
+async function openAttendance() {
+  document.getElementById('attDate').value = new Date().toISOString().slice(0, 10);
+  await loadStudents();
+  const batches = [...new Set(students.map(s => s.batch_name).filter(Boolean))];
+  document.getElementById('attBatch').innerHTML =
+    '<option value="">All Batches</option>' + batches.map(b => `<option>${b}</option>`).join('');
+  show('attendanceScreen');
+  holidayOverride = false;
+  loadAttendance();
+}
+
+function isHoliday(dateStr) { return INDIAN_HOLIDAYS_2025.includes(dateStr); }
+function isWorkingDay(dateStr) { return workingDays.includes(new Date(dateStr).getDay()); }
+
+function overrideHoliday() {
+  holidayOverride = true;
+  document.getElementById('holidayBanner').classList.add('hidden');
+  document.getElementById('saveAttBtn').style.display = '';
+  loadAttendance();
+}
+
+async function loadAttendance() {
+  attState = {};
+  const batch = document.getElementById('attBatch').value;
+  const date = document.getElementById('attDate').value;
+  const list = students.filter(s => !batch || s.batch_name === batch);
+
+  const holidayBanner = document.getElementById('holidayBanner');
+
+  if (!holidayOverride) {
+    if (isHoliday(date)) {
+      holidayBanner.classList.remove('hidden');
+      document.getElementById('holidayText').textContent = `🎉 ${HOLIDAY_NAMES[date] || 'Holiday today'} — No class scheduled`;
+      document.getElementById('attList').innerHTML = '';
+      document.getElementById('saveAttBtn').style.display = 'none';
+      return;
+    }
+    if (!isWorkingDay(date)) {
+      holidayBanner.classList.remove('hidden');
+      document.getElementById('holidayText').textContent = `📅 This is an off day (not in your working days)`;
+      document.getElementById('attList').innerHTML = '';
+      document.getElementById('saveAttBtn').style.display = 'none';
+      return;
+    }
+  }
+
+  holidayBanner.classList.add('hidden');
+  document.getElementById('saveAttBtn').style.display = '';
+
+  const [todayRes, yesterdayRes] = await Promise.all([
+    sb.from('attendance').select('*').eq('teacher_id', user.id).eq('date', date),
+    sb.from('attendance').select('*').eq('teacher_id', user.id)
+      .eq('date', new Date(Date.now() - 864e5).toISOString().slice(0, 10))
+  ]);
+
+  (todayRes.data || []).forEach(a => attState[a.student_id] = a.status);
+
+  list.forEach(s => {
+    if (!attState[s.id]) {
+      const y = (yesterdayRes.data || []).find(a => a.student_id === s.id);
+      if (y) attState[s.id] = y.status;
+    }
+  });
+
+  document.getElementById('attList').innerHTML = list.map(s => `
+    <div class="flex items-center justify-between bg-white dark:bg-dark-card rounded-xl p-3 mb-2 border border-slate-100 dark:border-dark-border">
+      <span class="font-medium text-sm text-slate-800 dark:text-dark-text">${s.name}</span>
+      <div class="flex gap-1">
+        ${['present','absent','late'].map(st => `
+          <button onclick="setAtt('${s.id}','${st}')" id="att-${s.id}-${st}"
+            class="px-3 py-2 rounded-lg text-xs font-medium btn-press ${attState[s.id] === st
+              ? st === 'present' ? 'bg-green-600 text-white'
+                : st === 'absent' ? 'bg-red-500 text-white' : 'bg-yellow-500 text-white'
+              : 'bg-slate-100 dark:bg-dark-border text-slate-600 dark:text-dark-muted'}">
+            ${st === 'present' ? '✓ P' : st === 'absent' ? '✗ A' : '⏰ L'}
+          </button>`).join('')}
+      </div>
+    </div>`).join('') || '<p class="text-center text-slate-400 dark:text-dark-muted py-4">No students in this batch</p>';
+}
+
+function setAtt(sid, st) {
+  attState[sid] = st;
+  ['present','absent','late'].forEach(x => {
+    const el = document.getElementById(`att-${sid}-${x}`);
+    if (!el) return;
+    el.className = `px-3 py-2 rounded-lg text-xs font-medium btn-press ${st === x
+      ? x === 'present' ? 'bg-green-600 text-white'
+        : x === 'absent' ? 'bg-red-500 text-white' : 'bg-yellow-500 text-white'
+      : 'bg-slate-100 dark:bg-dark-border text-slate-600 dark:text-dark-muted'}`;
+  });
+}
+
+async function saveAttendance() {
+  const btn = document.getElementById('saveAttBtn');
+  btn.disabled = true; btn.textContent = 'Saving…';
+  const date = document.getElementById('attDate').value;
+
+  const rows = Object.entries(attState).map(([sid, st]) => ({
+    student_id: sid, teacher_id: user.id, date, status: st
+  }));
+
+  if (rows.length) await sb.from('attendance').upsert(rows, { onConflict: 'student_id,date' });
+
+  btn.disabled = false; btn.textContent = 'Save Attendance';
+  toast(`Attendance saved for ${rows.length} students ✓`);
+  show('appScreen');
+}
+
+/* ===== Homework (DB save + WA share + native share with file) ===== */
+async function loadHomework() {
+  document.getElementById('hwDate').value = new Date().toISOString().slice(0, 10);
+  await loadStudents();
+  const batches = [...new Set(students.map(s => s.batch_name).filter(Boolean))];
+  document.getElementById('hwBatch').innerHTML =
+    '<option value="">All Batches</option>' + batches.map(b => `<option>${b}</option>`).join('');
+
+  const start = ym(month) + '-01';
+  const end = new Date(month.getFullYear(), month.getMonth() + 1, 1).toISOString().slice(0, 10);
+  const res = await sb.from('homework')
+    .select('*')
+    .eq('teacher_id', user.id)
+    .gte('hw_date', start)
+    .lt('hw_date', end)
+    .order('hw_date', { ascending: false })
+    .limit(10);
+
+  if (res.error) {
+    document.getElementById('hwList').innerHTML =
+      `<p class="text-center text-red-600 py-4">Homework load failed: ${res.error.message}</p>`;
+    return;
+  }
+
+  const data = res.data || [];
+  document.getElementById('hwList').innerHTML = data.map(h => `
+    <div class="bg-white dark:bg-dark-card rounded-xl p-3 mb-2 border border-slate-100 dark:border-dark-border">
+      <div class="flex justify-between items-start mb-1">
+        <span class="text-xs font-bold text-purple-600 dark:text-purple-400">${h.hw_date} · ${h.batch_name || 'All'}</span>
+        <span class="text-xs text-slate-400 dark:text-dark-muted">${h.subject || ''}</span>
+      </div>
+      <p class="text-sm text-slate-700 dark:text-dark-text">${h.homework_text}</p>
+      ${h.topic_covered ? `<p class="text-xs text-slate-500 dark:text-dark-muted mt-1">📖 Topic: ${h.topic_covered}</p>` : ''}
+      ${h.resource_link ? `<a href="${h.resource_link}" target="_blank" class="text-xs text-primary-600 dark:text-primary-400 underline mt-1 block">🔗 Resource Link</a>` : ''}
+      <button onclick="shareHwEntry('${h.id}')"
+        class="mt-2 text-xs bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 px-3 py-1 rounded-lg btn-press">📤 Share</button>
+    </div>`).join('') ||
+    '<p class="text-center text-slate-400 dark:text-dark-muted mt-4 py-4">No homework this month</p>';
+}
+
+async function saveHomework() {
+  const hwText = clean(document.getElementById('hwText').value);
+  const date = document.getElementById('hwDate').value;
+  const batch = document.getElementById('hwBatch').value;
+  const subject = clean(document.getElementById('hwSubject').value);
+  const topic = clean(document.getElementById('hwTopic').value);
+  const link = document.getElementById('hwLink').value.trim();
+
+  if (!hwText) return toast('Enter homework details', 'bg-red-600');
+  if (!date) return toast('Select a date', 'bg-red-600');
+
+  const { error } = await sb.from('homework').insert({
+    teacher_id: user.id,
+    hw_date: date,
+    batch_name: batch || null,
+    subject: subject || null,
+    homework_text: hwText,
+    topic_covered: topic || null,
+    resource_link: link || null
+  });
+
+  if (error) return toast('Save failed: ' + error.message, 'bg-red-600');
+
+  ['hwText','hwSubject','hwTopic','hwLink'].forEach(id => document.getElementById(id).value = '');
+  toast('Homework saved ✓');
+  loadHomework();
+}
+
+function buildHomeworkMessage(hw) {
+  let msg = `📝 *Homework — ${hw.hw_date}*\n`;
+  if (hw.batch_name) msg += `*Batch:* ${hw.batch_name}\n`;
+  if (hw.subject) msg += `*Subject:* ${hw.subject}\n`;
+  msg += `\n${hw.homework_text}`;
+  if (hw.topic_covered) msg += `\n\n📖 *Today's Topic:* ${hw.topic_covered}`;
+  if (hw.resource_link) msg += `\n🔗 *Resource:* ${hw.resource_link}`;
+  msg += `\n\n— ${profile.name}\n_Sent via FeeBook 📚_`;
+  return msg;
+}
+
+function shareHomeworkWA() {
+  const hwText = clean(document.getElementById('hwText').value);
+  const date = document.getElementById('hwDate').value;
+  const batch = document.getElementById('hwBatch').value;
+  const subject = clean(document.getElementById('hwSubject').value);
+  const topic = clean(document.getElementById('hwTopic').value);
+  const link = document.getElementById('hwLink').value.trim();
+
+  if (!hwText) return toast('Enter homework first', 'bg-red-600');
+
+  const hw = { hw_date: date, batch_name: batch, subject, homework_text: hwText, topic_covered: topic, resource_link: link };
+  const msg = buildHomeworkMessage(hw);
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+}
+
+async function shareHomeworkWithFile() {
+  const hwText = clean(document.getElementById('hwText').value);
+  const date = document.getElementById('hwDate').value;
+  const batch = document.getElementById('hwBatch').value;
+  const subject = clean(document.getElementById('hwSubject').value);
+  const topic = clean(document.getElementById('hwTopic').value);
+  const link = document.getElementById('hwLink').value.trim();
+
+  if (!hwText) return toast('Enter homework first', 'bg-red-600');
+
+  const hw = { hw_date: date, batch_name: batch, subject, homework_text: hwText, topic_covered: topic, resource_link: link };
+  const msg = buildHomeworkMessage(hw);
+
+  const fileInput = document.createElement('input');
+  fileInput.type = 'file';
+  fileInput.accept = 'image/*,application/pdf';
+  fileInput.multiple = false;
+
+  fileInput.onchange = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          title: `Homework - ${date || ''}`.trim(),
+          text: msg,
+          files: [file]
+        });
+        toast('Shared successfully ✓');
+      } catch (err) {
+        if (err?.name !== 'AbortError') toast('Share failed — try "Text Only"', 'bg-red-600');
+      }
+    } else {
+      toast('Your browser doesn’t support file sharing. Use "Text Only".', 'bg-yellow-600');
+    }
+  };
+
+  fileInput.click();
+}
+
+async function shareHwEntry(hwId) {
+  const { data } = await sb.from('homework').select('*').eq('id', hwId).single();
+  if (!data) return;
+  const msg = buildHomeworkMessage(data);
+  window.open(`https://wa.me/?text=${encodeURIComponent(msg)}`);
+}
+
+/* ===== Expenses ===== */
+async function addExpense() {
+  const desc = clean(document.getElementById('expDesc').value);
+  const amt = parseFloat(document.getElementById('expAmount').value);
+  if (!desc) return toast('Enter a description', 'bg-red-600');
+  if (!amt || amt < 1) return toast('Enter a valid amount', 'bg-red-600');
+
+  await sb.from('expenses').insert({
+    teacher_id: user.id,
+    description: desc,
+    amount: amt,
+    category: document.getElementById('expCat').value,
+    expense_date: new Date().toISOString().slice(0, 10)
+  });
+
+  document.getElementById('expDesc').value = '';
+  document.getElementById('expAmount').value = '';
+  loadExpenses();
+}
+
+async function loadExpenses() {
+  const start = ym(month) + '-01';
+  const end = new Date(month.getFullYear(), month.getMonth() + 1, 1).toISOString().slice(0, 10);
+  const { data: expData } = await sb.from('expenses').select('*')
+    .eq('teacher_id', user.id).gte('expense_date', start).lt('expense_date', end);
+
+  const total = (expData || []).reduce((t, e) => t + parseFloat(e.amount), 0);
+  const income = payments.reduce((t, p) => t + parseFloat(p.amount), 0);
+
+  document.getElementById('profitCard').innerHTML = `
+    <div class="flex justify-between text-sm">
+      <div class="text-center"><p class="text-slate-500 dark:text-dark-muted text-xs">Income</p><p class="font-bold text-green-600 text-base">₹${income.toLocaleString('en-IN')}</p></div>
+      <div class="text-center"><p class="text-slate-500 dark:text-dark-muted text-xs">Expenses</p><p class="font-bold text-red-600 text-base">₹${total.toLocaleString('en-IN')}</p></div>
+      <div class="text-center"><p class="text-slate-500 dark:text-dark-muted text-xs">Profit</p><p class="font-bold text-primary-600 dark:text-primary-400 text-base">₹${(income - total).toLocaleString('en-IN')}</p></div>
+    </div>`;
+
+  document.getElementById('expList').innerHTML = (expData || [])
+    .sort((a, b) => b.expense_date.localeCompare(a.expense_date))
+    .map(e => `
+      <div class="flex justify-between bg-white dark:bg-dark-card rounded-xl p-3 mb-2 border border-slate-100 dark:border-dark-border text-sm">
+        <div><p class="font-medium text-slate-800 dark:text-dark-text">${e.description}</p>
+          <p class="text-xs text-slate-400 dark:text-dark-muted">${e.category} · ${e.expense_date}</p></div>
+        <span class="font-bold text-slate-800 dark:text-dark-text">₹${e.amount}</span>
+      </div>`).join('') || '<p class="text-center text-slate-400 dark:text-dark-muted py-4">No expenses this month</p>';
+}
+
+/* ===== Reports ===== */
+async function renderReports() {
+  await loadDashboardData();
+  document.getElementById('repMonth').textContent = month.toLocaleString('en-IN', { month: 'long', year: 'numeric' });
+
+  const income = payments.reduce((t, p) => t + parseFloat(p.amount), 0);
+  const fp = students.filter(s => getPaid(s.id) >= s.monthly_fee).length;
+  const pp = students.filter(s => { const p = getPaid(s.id); return p > 0 && p < s.monthly_fee; }).length;
+  const up = students.length - fp - pp;
+  const rate = students.length ? Math.round(fp / students.length * 100) : 0;
+
+  document.getElementById('repSummary').innerHTML = `
+    <div class="grid grid-cols-3 gap-3 text-center mb-3">
+      <div><p class="text-xs text-slate-500 dark:text-dark-muted">Collected</p><p class="font-bold text-green-600 text-base">₹${income.toLocaleString('en-IN')}</p></div>
+      <div><p class="text-xs text-slate-500 dark:text-dark-muted">Students</p><p class="font-bold text-primary-600 dark:text-primary-400 text-base">${students.length}</p></div>
+      <div><p class="text-xs text-slate-500 dark:text-dark-muted">Collection%</p><p class="font-bold text-slate-700 dark:text-dark-text text-base">${rate}%</p></div>
+    </div>
+    <div class="w-full bg-slate-100 dark:bg-dark-border rounded-full h-2 mb-2">
+      <div class="bg-green-600 h-2 rounded-full transition-all duration-500" style="width:${rate}%"></div>
+    </div>
+    <div class="text-xs text-slate-500 dark:text-dark-muted text-center">✅ ${fp} paid · 🟡 ${pp} partial · ❌ ${up} pending</div>`;
+
+  document.getElementById('repTable').innerHTML = `
+    <p class="font-semibold text-slate-700 dark:text-dark-text mb-2 text-sm">Student Summary</p>` +
+    (students.map(s => {
+      const p = getPaid(s.id);
+      const pct = Math.min(100, Math.round(p / s.monthly_fee * 100));
+      return `<div class="py-2 border-b border-slate-100 dark:border-dark-border last:border-0">
+        <div class="flex justify-between text-sm mb-1">
+          <span class="text-slate-700 dark:text-dark-text">${s.name}</span>
+          <span class="${p >= s.monthly_fee ? 'text-green-600' : 'text-red-600'} font-medium">₹${p} / ₹${s.monthly_fee}</span>
+        </div>
+        <div class="w-full bg-slate-100 dark:bg-dark-border rounded-full h-1">
+          <div class="${p >= s.monthly_fee ? 'bg-green-500' : 'bg-red-400'} h-1 rounded-full" style="width:${pct}%"></div>
+        </div>
+      </div>`;
+    }).join('') || '<p class="text-center text-slate-400 dark:text-dark-muted py-4">No students yet</p>');
+}
+
+async function exportReport() {
+  if (!window.proCached) return toast('Export is a Pro feature — Settings → Go Pro', 'bg-slate-700');
+
+  const income = payments.reduce((t, p) => t + parseFloat(p.amount), 0);
+  const fp = students.filter(s => getPaid(s.id) >= s.monthly_fee).length;
+  const pp = students.filter(s => { const p = getPaid(s.id); return p > 0 && p < s.monthly_fee; }).length;
+
+  const msg = `📊 *FeeBook Monthly Report*\nMonth: ${month.toLocaleString('en-IN', { month: 'long', year: 'numeric' })}\nTeacher: ${profile.name}\n\nTotal Students: ${students.length}\n✅ Fully Paid: ${fp}\n🟡 Partial: ${pp}\n❌ Pending: ${students.length - fp - pp}\n\n💰 Total Collected: ₹${income.toLocaleString('en-IN')}\n📈 Collection Rate: ${students.length ? Math.round(fp / students.length * 100) : 0}%\n\nGenerated by FeeBook 📚\nfeebook.vercel.app`;
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg));
+}
+
+/* ===== Settings (payment code + referral) ===== */
+async function renderSettings() {
+  if (!user) return;
+
+  const { data: subs } = await sb.from('subscriptions')
+    .select('*').eq('teacher_id', user.id)
+    .order('expiry_date', { ascending: false }).limit(1);
+
+  const active = subs?.[0] && new Date(subs[0].expiry_date) >= new Date();
+  const days = active ? Math.ceil((new Date(subs[0].expiry_date) - new Date()) / 864e5) : 0;
+
+  document.getElementById('proCard').innerHTML = active
+    ? `<div class="flex items-center gap-2 mb-2">
+         <span class="text-2xl">✨</span>
+         <p class="font-bold text-green-600 dark:text-green-400 text-base">FeeBook Pro Active</p>
+       </div>
+       <p class="text-sm text-slate-500 dark:text-dark-muted">Expires ${subs[0].expiry_date} · ${days} days remaining</p>
+       <a href="mailto:frankmanvideo@gmail.com?subject=FeeBook Pro Renewal" target="_blank"
+         class="block text-center bg-yellow-500 hover:bg-yellow-600 text-white rounded-xl py-3 font-medium mt-3 btn-press transition-colors">
+         Email to Renew →</a>`
+    : `<p class="font-bold text-base dark:text-dark-text mb-1">Free Plan</p>
+       <p class="text-sm text-slate-500 dark:text-dark-muted">
+         Pro: unlimited students, full history, report export, advanced reports.<br>
+         <strong class="text-primary-600 dark:text-primary-400">₹99/month</strong>
+       </p>
+       <div class="mt-3 bg-slate-50 dark:bg-dark-border rounded-xl p-3 text-xs text-slate-500 dark:text-dark-muted">
+         ✅ Free: 25 students, attendance, expenses, current month reports<br>
+         ⭐ Pro: Unlimited everything + export + history
+       </div>`;
+
+  // payment code
+  let { data: codes } = await sb.from('payment_codes')
+    .select('*').eq('teacher_id', user.id).eq('status', 'pending')
+    .order('created_at', { ascending: false }).limit(1);
+
+  if (!codes?.length) {
+    const code = 'FB-' + crypto.randomUUID().slice(0, 4).toUpperCase() + '-' + crypto.randomUUID().slice(0, 5).toUpperCase();
+    await sb.from('payment_codes').insert({ teacher_id: user.id, code });
+    codes = [{ code }];
+  }
+  document.getElementById('myCode').textContent = codes[0].code;
+
+  // account card
+  document.getElementById('accountCard').innerHTML = `
+    <p class="font-semibold mb-2 dark:text-dark-text">Account</p>
+    <p class="text-sm text-slate-600 dark:text-dark-muted">${profile.name}</p>
+    <p class="text-sm text-slate-500 dark:text-dark-muted">+91 ${profile.phone || 'Not set'}</p>
+    <p class="text-sm text-slate-500 dark:text-dark-muted">${user.email || 'Google Login'}</p>`;
+
+  // referral
+  const ref = 'FB' + user.id.slice(0, 6).toUpperCase();
+  const refMsg = encodeURIComponent(`Try FeeBook — best free fee tracker for tuition teachers. Use my referral code *${ref}* to get 7 days Pro free! feebook.vercel.app 📚`);
+  document.getElementById('referralCard').innerHTML = `
+    <p class="font-semibold mb-1 dark:text-dark-text">Refer a Teacher 🎁</p>
+    <p class="text-sm text-slate-500 dark:text-dark-muted mb-1">Your code: <span class="font-mono font-bold text-primary-600 dark:text-primary-400">${ref}</span></p>
+    <p class="text-xs text-slate-400 dark:text-dark-muted mb-3">They get 7 days Pro free · You get 7 days Pro extension</p>
+    <button onclick="window.open('https://wa.me/?text=${refMsg}')"
+      class="w-full bg-green-600 hover:bg-green-700 text-white rounded-xl py-3 font-medium text-sm btn-press transition-colors">
+      📤 Share via WhatsApp</button>`;
+
+  updateWorkingDayUI();
+}
+
+function copyCode() {
+  const code = document.getElementById('myCode').textContent;
+  navigator.clipboard.writeText(code).then(() => {
+    toast('Code copied ✓ — paste it in your email to request Pro');
+  }).catch(() => {
+    toast('Copy failed — code: ' + code, 'bg-slate-700');
+  });
+}
+
+async function activateManual() {
+  const code = clean(document.getElementById('manualCode').value).toUpperCase();
+  if (!code) return toast('Enter your activation code', 'bg-red-600');
+  const { data } = await sb.rpc('activate_with_code', { p_code: code });
+
+  if (data === 'ok') {
+    toast('🎉 Pro Activated for 30 days!');
+    document.getElementById('manualCode').value = '';
+    cacheInvalidate(`pro_${user.id}`);
+    await refreshPro();
+    renderSettings();
+  } else if (data === 'used') toast('This code was already used', 'bg-red-600');
+  else if (data === 'not_yours') toast('That code belongs to a different account', 'bg-red-600');
+  else toast('Invalid code — check again or WhatsApp support', 'bg-red-600');
+}
+
+/* ===== Service Worker ===== */
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('/sw.js').catch(() => {});
+}
+
+/* ===== START ===== */
+initApp();
+</script>
+<script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a1f089b0eec17a12',t:'MTc4NDcwMzMwNg=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
