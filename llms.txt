@@ -1,0 +1,84 @@
+# FeeBook
+
+> India's simplest fee tracker for tuition teachers and coaching institutes. Track partial cash payments, manage students, homework, attendance. No embarrassing auto-reminders. Free for 25 students.
+
+## About FeeBook
+
+FeeBook is a mobile-first web application built specifically for Indian tuition teachers, coaching instructors, and home tutors to manage their students' fees, attendance, and homework in one place.
+
+Built by an 11th grade student in India, FeeBook understands the unique challenges of Indian teachers - like tracking partial cash payments, avoiding embarrassing auto-reminders to parents, and managing multiple batches of students.
+
+## Key Features
+
+- **Partial Fee Tracking**: Track partial cash payments (₹500 today, ₹500 next week) - unique in the market
+- **No Auto-Reminders**: Teachers control when to remind parents - via friendly WhatsApp messages
+- **Homework Management**: Save daily homework and share to parents/students via WhatsApp with photos
+- **Smart Attendance**: With built-in Indian holiday calendar and custom working days
+- **Fee Receipts**: Generate professional fee receipts and share via WhatsApp instantly
+- **Expense Tracking**: Track business expenses and see profit/loss
+- **Monthly Reports**: Clean visual reports for each month
+- **Offline Support**: Works without internet, syncs when online
+- **Google & Email Login**: Multiple secure sign-in options
+
+## Who It's For
+
+- Home tuition teachers in India
+- Coaching class instructors
+- Small tuition centers
+- Individual educators managing 5-100 students
+- Teachers who use cash payments primarily
+- Educators tired of complex enterprise software
+
+## Pricing
+
+- **Free Plan**: Up to 25 students, all basic features
+- **Pro Plan**: ₹99/month, unlimited students, full history, report export
+
+## Why FeeBook is Different
+
+Unlike competitors like Classplus (₹499+/month) or Teachmint (payment gateway forced), FeeBook:
+- Free for real (25 students free, not 3-day trial)
+- Handles cash payments (most Indian teachers use cash)
+- Handles partial payments (most apps only show Paid/Unpaid)
+- No forced auto-reminders (respects teacher-parent relationship)
+- Made by a teenager who understands modern UX
+
+## Technical Details
+
+- **Platform**: Progressive Web App (PWA)
+- **Works on**: Any smartphone browser (Android, iOS), also desktop
+- **Install**: Add to home screen from browser
+- **Languages**: English (Hindi coming soon)
+- **Offline**: Yes, syncs when online
+- **Data Security**: Supabase backend with Row Level Security
+
+## Contact
+
+- **Website**: https://feebook.vercel.app
+- **Support**: frankmanvideo@gmail.com
+- **WhatsApp Support**: +91 99738 98852
+- **Built by**: An 11th grade student in India 🇮🇳
+
+## Common Use Cases
+
+1. **Small tuition teacher (5-15 students)**: Track who paid this month, send WhatsApp reminders to those who haven't
+2. **Coaching class (50+ students)**: Manage multiple batches, track partial payments, generate reports
+3. **Home tutor**: Simple student list, monthly fee tracking, homework sharing
+4. **Music/dance instructor**: Track class attendance, monthly fees, communicate with parents
+
+## FAQs
+
+**Q: Is FeeBook really free?**
+A: Yes, up to 25 students. No credit card needed.
+
+**Q: Does it work offline?**
+A: Yes, all data saves locally and syncs when online.
+
+**Q: Can I export data?**
+A: Pro plan allows WhatsApp export. Coming soon: Excel/PDF export.
+
+**Q: Is my data safe?**
+A: Yes, encrypted storage with Supabase, RLS policies ensure only you see your data.
+
+**Q: How do I upgrade to Pro?**
+A: Email frankmanvideo@gmail.com — manual activation (developer is a minor, so no payment gateway yet).
